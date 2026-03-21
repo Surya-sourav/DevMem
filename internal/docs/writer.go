@@ -124,8 +124,8 @@ func WriteModuleDoc(repoRoot string, mod crawler.Module, analysis ai.ModuleAnaly
 	return atomicWrite(outPath, []byte(b.String()))
 }
 
-// PatchModuleDoc updates named sections and appends commit hash into changed_in.
-func PatchModuleDoc(repoRoot string, moduleName string, patch ai.DocPatch, commitHash string) error {
+// PatchModuleDoc updates named sections and appends a compact changelog entry.
+func PatchModuleDoc(repoRoot string, moduleName string, patch ai.DocPatch, commitHash string, shortSummary string) error {
 	path := filepath.Join(repoRoot, ".devmem", "docs", "modules", moduleName+".md")
 	content, err := os.ReadFile(path)
 	if err != nil {
@@ -136,12 +136,16 @@ func PatchModuleDoc(repoRoot string, moduleName string, patch ai.DocPatch, commi
 		return fmt.Errorf("parse module doc frontmatter: %w", err)
 	}
 	for heading, replacement := range patch.Sections {
+		if strings.EqualFold(strings.TrimSpace(heading), "changelog") {
+			continue
+		}
 		body = replaceSection(body, heading, replacement)
 	}
 	changedIn := toStringSlice(fm["changed_in"])
 	if !contains(changedIn, commitHash) {
 		changedIn = append(changedIn, commitHash)
 	}
+	body = ensureChangelogSection(body, changedIn, commitHash, shortSummary)
 	fm["changed_in"] = changedIn
 	updated, err := RenderFrontmatter(fm, body)
 	if err != nil {
@@ -172,7 +176,21 @@ func WriteChangelogEntry(repoRoot string, commitHash string, classification ai.C
 		b.WriteString("  - " + m + "\n")
 	}
 	b.WriteString("---\n\n")
-	b.WriteString(strings.TrimSpace(classification.Summary) + "\n")
+	summary := strings.TrimSpace(classification.Summary)
+	if summary == "" {
+		summary = "No summary provided."
+	}
+	b.WriteString(summary + "\n")
+	if len(mods) > 0 {
+		b.WriteString("\nModule updates:\n")
+		for _, m := range mods {
+			desc := strings.TrimSpace(classification.Modules[m])
+			if desc == "" {
+				desc = "No module-specific summary provided."
+			}
+			b.WriteString("- " + m + ": " + desc + "\n")
+		}
+	}
 	return atomicWrite(path, []byte(b.String()))
 }
 
@@ -335,6 +353,84 @@ func contains(items []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func ensureChangelogSection(body string, changeIDs []string, latestID, latestSummary string) string {
+	target := "## Changelog"
+	lines := strings.Split(body, "\n")
+	start := -1
+	for i, line := range lines {
+		if strings.TrimSpace(line) == target {
+			start = i
+			break
+		}
+	}
+	end := len(lines)
+	if start != -1 {
+		for i := start + 1; i < len(lines); i++ {
+			if strings.HasPrefix(strings.TrimSpace(lines[i]), "## ") {
+				end = i
+				break
+			}
+		}
+	}
+
+	entries := map[string]string{}
+	if start != -1 {
+		for _, line := range lines[start+1 : end] {
+			trimmed := strings.TrimSpace(line)
+			if !strings.HasPrefix(trimmed, "- `") {
+				continue
+			}
+			idStart := strings.Index(trimmed, "`")
+			idEnd := strings.Index(trimmed[idStart+1:], "`")
+			if idStart == -1 || idEnd == -1 {
+				continue
+			}
+			id := trimmed[idStart+1 : idStart+1+idEnd]
+			desc := ""
+			if sep := strings.Index(trimmed, " - "); sep != -1 {
+				desc = strings.TrimSpace(trimmed[sep+3:])
+			}
+			if id != "" {
+				entries[id] = desc
+			}
+		}
+	}
+
+	if strings.TrimSpace(latestID) != "" {
+		summary := strings.TrimSpace(latestSummary)
+		if summary == "" {
+			summary = "See .devmem/changelog/" + latestID + ".md"
+		}
+		entries[latestID] = summary
+	}
+
+	built := make([]string, 0, len(changeIDs))
+	for _, id := range changeIDs {
+		id = strings.TrimSpace(id)
+		if id == "" {
+			continue
+		}
+		desc := strings.TrimSpace(entries[id])
+		if desc == "" {
+			desc = "See .devmem/changelog/" + id + ".md"
+		}
+		built = append(built, fmt.Sprintf("- `%s` - %s", id, desc))
+	}
+	if len(built) == 0 {
+		built = append(built, "No changes captured yet. Run devmem capture after your next commit.")
+	}
+	sectionBody := strings.Join(built, "\n")
+
+	if start == -1 {
+		trimmed := strings.TrimRight(body, "\n")
+		return trimmed + "\n\n## Changelog\n\n" + sectionBody + "\n"
+	}
+	updated := append([]string{}, lines[:start]...)
+	updated = append(updated, target, "", sectionBody, "")
+	updated = append(updated, lines[end:]...)
+	return strings.Join(updated, "\n")
 }
 
 func atomicWrite(path string, data []byte) error {

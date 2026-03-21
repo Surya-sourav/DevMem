@@ -109,7 +109,9 @@ var captureCmd = &cobra.Command{
 			if patchErr != nil {
 				return fmt.Errorf("patch module doc for %s: %w", moduleName, patchErr)
 			}
-			if writeErr := docs.PatchModuleDoc(repoRootOrDefault(repoDir), moduleName, *docPatch, changeID); writeErr != nil {
+			delete(docPatch.Sections, "Changelog")
+			delete(docPatch.Sections, "changelog")
+			if writeErr := docs.PatchModuleDoc(repoRootOrDefault(repoDir), moduleName, *docPatch, changeID, moduleSummary); writeErr != nil {
 				return fmt.Errorf("write patched module doc for %s: %w", moduleName, writeErr)
 			}
 		}
