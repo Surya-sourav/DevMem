@@ -52,6 +52,24 @@
       line-height: 1.6;
     }
 
+    #galaxy {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav,
+    main,
+    footer,
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -735,6 +753,7 @@
   </style>
 </head>
 <body>
+  <canvas id="galaxy"></canvas>
   <nav class="top-nav">
     <div class="nav-inner">
       <a class="nav-brand" href="#hero">devmem</a>
@@ -974,5 +993,345 @@ The module follows the Cobra CLI pattern with each command in separate files. ca
     </div>
     <p class="footer-love">Made with love ❤️ for developers by a Developer</p>
   </footer>
+  <script>
+    (function () {
+      const canvas = document.getElementById("galaxy");
+      const ctx = canvas.getContext("2d");
+
+      let starsLayer1 = [];
+      let starsLayer2 = [];
+      let starsLayer3 = [];
+      let milkyWayStars = [];
+      let shootingStars = [];
+
+      let startTime = 0;
+      let lastFrame = 0;
+      let nextShootingAt = 0;
+      let resizeTimer = null;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function randInt(min, max) {
+        return Math.floor(rand(min, max + 1));
+      }
+
+      function makeStar(layer, options) {
+        let colorR = 255;
+        let colorG = 255;
+        let colorB = 255;
+
+        if (layer === 2) {
+          const tint = Math.random();
+          if (tint < 0.20) {
+            colorR = 255;
+            colorG = 240;
+            colorB = 220;
+          } else if (tint < 0.35) {
+            colorR = 220;
+            colorG = 235;
+            colorB = 255;
+          }
+        }
+
+        if (layer === 3) {
+          const tintGroup = randInt(0, 2);
+          if (tintGroup === 1) {
+            colorR = 255;
+            colorG = 240;
+            colorB = 220;
+          } else if (tintGroup === 2) {
+            colorR = 220;
+            colorG = 235;
+            colorB = 255;
+          }
+        }
+
+        return {
+          x: rand(0, canvas.width),
+          y: rand(0, canvas.height),
+          radius: rand(options.minRadius, options.maxRadius),
+          opacity: rand(options.minOpacity, options.maxOpacity),
+          twinkleSpeed: rand(options.minTwinkle, options.maxTwinkle),
+          twinkleOffset: rand(0, Math.PI * 2),
+          colorR,
+          colorG,
+          colorB,
+          layer
+        };
+      }
+
+      function inMilkyWayBand(x, y) {
+        const x1 = canvas.width * 0.10;
+        const y1 = canvas.height;
+        const x2 = canvas.width * 0.90;
+        const y2 = 0;
+        const bandWidth = canvas.height * 0.30;
+
+        const A = y2 - y1;
+        const B = x1 - x2;
+        const C = x2 * y1 - x1 * y2;
+        const distance = Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B);
+
+        return distance <= bandWidth * 0.5;
+      }
+
+      function generateMilkyWayStars() {
+        milkyWayStars = [];
+        while (milkyWayStars.length < 500) {
+          const x = rand(0, canvas.width);
+          const y = rand(0, canvas.height);
+          if (!inMilkyWayBand(x, y)) {
+            continue;
+          }
+          milkyWayStars.push({
+            x,
+            y,
+            radius: rand(0.2, 0.5),
+            opacity: rand(0.15, 0.35),
+            twinkleSpeed: rand(3000, 6000),
+            twinkleOffset: rand(0, Math.PI * 2),
+            colorR: 255,
+            colorG: 255,
+            colorB: 255,
+            layer: 0
+          });
+        }
+      }
+
+      function generateStars() {
+        starsLayer1 = [];
+        starsLayer2 = [];
+        starsLayer3 = [];
+
+        for (let i = 0; i < 800; i++) {
+          starsLayer1.push(makeStar(1, {
+            minRadius: 0.3,
+            maxRadius: 0.8,
+            minOpacity: 0.2,
+            maxOpacity: 0.5,
+            minTwinkle: 3000,
+            maxTwinkle: 6000
+          }));
+        }
+
+        for (let i = 0; i < 300; i++) {
+          starsLayer2.push(makeStar(2, {
+            minRadius: 0.8,
+            maxRadius: 1.5,
+            minOpacity: 0.4,
+            maxOpacity: 0.8,
+            minTwinkle: 2000,
+            maxTwinkle: 4000
+          }));
+        }
+
+        for (let i = 0; i < 60; i++) {
+          starsLayer3.push(makeStar(3, {
+            minRadius: 1.5,
+            maxRadius: 3.0,
+            minOpacity: 0.7,
+            maxOpacity: 1.0,
+            minTwinkle: 1500,
+            maxTwinkle: 3000
+          }));
+        }
+
+        generateMilkyWayStars();
+      }
+
+      function drawNebulae() {
+        const w = canvas.width;
+        const h = canvas.height;
+
+        const n1 = ctx.createRadialGradient(w * 0.15, h * 0.20, 0, w * 0.15, h * 0.20, w * 0.35);
+        n1.addColorStop(0, "rgba(80, 40, 140, 0.06)");
+        n1.addColorStop(0.4, "rgba(60, 20, 100, 0.03)");
+        n1.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n1;
+        ctx.fillRect(0, 0, w, h);
+
+        const n2 = ctx.createRadialGradient(w * 0.85, h * 0.75, 0, w * 0.85, h * 0.75, w * 0.40);
+        n2.addColorStop(0, "rgba(20, 60, 100, 0.07)");
+        n2.addColorStop(0.4, "rgba(10, 40, 80, 0.03)");
+        n2.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n2;
+        ctx.fillRect(0, 0, w, h);
+
+        const n3 = ctx.createRadialGradient(w * 0.70, h * 0.30, 0, w * 0.70, h * 0.30, w * 0.25);
+        n3.addColorStop(0, "rgba(100, 30, 60, 0.04)");
+        n3.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n3;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      function starOpacity(star, elapsed) {
+        const phase = (elapsed / star.twinkleSpeed) * Math.PI * 2 + star.twinkleOffset;
+        const twinkle = Math.sin(phase) * 0.3;
+        return Math.max(0.05, Math.min(1.0, star.opacity + twinkle));
+      }
+
+      function drawStar(star, elapsed) {
+        const currentOpacity = starOpacity(star, elapsed);
+
+        if (star.layer === 3) {
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + (currentOpacity * 0.035) + ")";
+          ctx.arc(star.x, star.y, star.radius * 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + currentOpacity + ")";
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawStarCollections(elapsed) {
+        for (let i = 0; i < milkyWayStars.length; i++) {
+          drawStar(milkyWayStars[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer1.length; i++) {
+          drawStar(starsLayer1[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer2.length; i++) {
+          drawStar(starsLayer2[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer3.length; i++) {
+          drawStar(starsLayer3[i], elapsed);
+        }
+      }
+
+      function scheduleNextShooting(now) {
+        nextShootingAt = now + 2000;
+      }
+
+      function spawnShootingStar(now) {
+        const startX = rand(canvas.width * 0.10, canvas.width * 0.60);
+        const startY = rand(canvas.height * 0.05, canvas.height * 0.40);
+        const angle = rand(20, 45) * Math.PI / 180;
+        const length = rand(80, 180);
+        const duration = rand(600, 900);
+
+        shootingStars.push({
+          startX,
+          startY,
+          angle,
+          length,
+          duration,
+          createdAt: now,
+          speed: rand(500, 900)
+        });
+      }
+
+      function drawShootingStars(now) {
+        if (now >= nextShootingAt) {
+          spawnShootingStar(now);
+          scheduleNextShooting(now);
+        }
+
+        const active = [];
+        for (let i = 0; i < shootingStars.length; i++) {
+          const s = shootingStars[i];
+          const t = (now - s.createdAt) / s.duration;
+          if (t >= 1) {
+            continue;
+          }
+
+          const distance = s.speed * ((now - s.createdAt) / 1000);
+          const headX = s.startX + Math.cos(s.angle) * distance;
+          const headY = s.startY + Math.sin(s.angle) * distance;
+          const tailX = headX - Math.cos(s.angle) * s.length;
+          const tailY = headY - Math.sin(s.angle) * s.length;
+
+          const gradient = ctx.createLinearGradient(tailX, tailY, headX, headY);
+          gradient.addColorStop(0, "rgba(255,255,255,0)");
+          gradient.addColorStop(1, "rgba(255,255,255,0.7)");
+
+          ctx.beginPath();
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 1;
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(headX, headY);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(255,255,255,1)";
+          ctx.arc(headX, headY, 1, 0, Math.PI * 2);
+          ctx.fill();
+
+          active.push(s);
+        }
+        shootingStars = active;
+      }
+
+      function drawFrame(now) {
+        if (now - lastFrame < 16) {
+          requestAnimationFrame(drawFrame);
+          return;
+        }
+        lastFrame = now;
+
+        const elapsed = now - startTime;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawNebulae();
+        drawStarCollections(elapsed);
+        drawShootingStars(now);
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function drawStatic() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawNebulae();
+
+        const all = [].concat(milkyWayStars, starsLayer1, starsLayer2, starsLayer3);
+        for (let i = 0; i < all.length; i++) {
+          const star = all[i];
+          if (star.layer === 3) {
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + (star.opacity * 0.035) + ")";
+            ctx.arc(star.x, star.y, star.radius * 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + star.opacity + ")";
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        generateStars();
+        if (reducedMotion) {
+          drawStatic();
+        }
+      }
+
+      function onResize() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resizeCanvas, 150);
+      }
+
+      window.addEventListener("resize", onResize);
+
+      window.addEventListener("load", function () {
+        resizeCanvas();
+        startTime = performance.now();
+        lastFrame = startTime;
+        scheduleNextShooting(startTime);
+        if (reducedMotion) {
+          drawStatic();
+          return;
+        }
+        requestAnimationFrame(drawFrame);
+      });
+    })();
+  </script>
 </body>
 </html>
