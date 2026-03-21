@@ -45,24 +45,46 @@ var captureCmd = &cobra.Command{
 		if strings.TrimSpace(fromCommit) == "" {
 			fromCommit = "HEAD~1"
 		}
+		usingWorktree := false
 		files, err := git.GetChangedFiles(repoDir, fromCommit, toCommit)
 		if err != nil {
 			return fmt.Errorf("get changed files: %w", err)
 		}
+		patch := ""
+		if len(files) > 0 {
+			patch, err = git.GetDiffPatch(repoDir, fromCommit, toCommit)
+			if err != nil {
+				return fmt.Errorf("get diff patch: %w", err)
+			}
+		} else {
+			files, err = git.GetChangedFilesFromWorktree(repoDir)
+			if err != nil {
+				return fmt.Errorf("get worktree changed files: %w", err)
+			}
+			if len(files) > 0 {
+				usingWorktree = true
+				patch, err = git.GetWorktreeDiffPatch(repoDir)
+				if err != nil {
+					return fmt.Errorf("get worktree diff patch: %w", err)
+				}
+			}
+		}
 		affected := modulesForFiles(cfg, files)
 		if len(affected) == 0 {
 			fmt.Fprintln(os.Stderr, "No module-affecting changes detected.")
-			s.LastCommit = toCommit
+			if !usingWorktree {
+				s.LastCommit = toCommit
+			}
 			s.LastCapture = time.Now().UTC().Format(time.RFC3339)
 			return state.WriteState(repoDir, s)
 		}
-		patch, err := git.GetDiffPatch(repoDir, fromCommit, toCommit)
-		if err != nil {
-			return fmt.Errorf("get diff patch: %w", err)
+		changeID := toCommit
+		if usingWorktree {
+			changeID = fmt.Sprintf("%s-worktree-%s", shortCommit(toCommit), time.Now().UTC().Format("20060102T150405Z"))
 		}
 		client := ai.NewClient(apiKey, model)
 		classification, err := client.ClassifyChange(ctx, ai.ChangePromptInput{
-			CommitMessage: toCommit,
+			CommitMessage: changeID,
 			DiffPatch:     patch,
 			ModuleNames:   keys(affected),
 		})
@@ -87,11 +109,11 @@ var captureCmd = &cobra.Command{
 			if patchErr != nil {
 				return fmt.Errorf("patch module doc for %s: %w", moduleName, patchErr)
 			}
-			if writeErr := docs.PatchModuleDoc(repoRootOrDefault(repoDir), moduleName, *docPatch, toCommit); writeErr != nil {
+			if writeErr := docs.PatchModuleDoc(repoRootOrDefault(repoDir), moduleName, *docPatch, changeID); writeErr != nil {
 				return fmt.Errorf("write patched module doc for %s: %w", moduleName, writeErr)
 			}
 		}
-		if err := docs.WriteChangelogEntry(repoDir, toCommit, *classification, time.Now().UTC()); err != nil {
+		if err := docs.WriteChangelogEntry(repoDir, changeID, *classification, time.Now().UTC()); err != nil {
 			return fmt.Errorf("write changelog entry: %w", err)
 		}
 		if classification.Type == "structural" {
@@ -113,7 +135,9 @@ var captureCmd = &cobra.Command{
 				return fmt.Errorf("write master architecture mermaid: %w", writeErr)
 			}
 		}
-		s.LastCommit = toCommit
+		if !usingWorktree {
+			s.LastCommit = toCommit
+		}
 		s.LastCapture = time.Now().UTC().Format(time.RFC3339)
 		if err := state.WriteState(repoDir, s); err != nil {
 			return fmt.Errorf("write state: %w", err)
@@ -235,4 +259,15 @@ func requireAPIKey(commandName string) error {
 		return nil
 	}
 	return fmt.Errorf("anthropic API key is required for %s; set DEVMEM_API_KEY or run devmem init and save it", commandName)
+}
+
+func shortCommit(hash string) string {
+	trimmed := strings.TrimSpace(hash)
+	if len(trimmed) > 12 {
+		return trimmed[:12]
+	}
+	if trimmed == "" {
+		return "unknown"
+	}
+	return trimmed
 }

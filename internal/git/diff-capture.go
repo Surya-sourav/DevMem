@@ -49,6 +49,39 @@ func GetDiffPatch(repoRoot, fromCommit, toCommit string) (string, error) {
 	return out, nil
 }
 
+// GetChangedFilesFromWorktree returns files changed in staged/unstaged worktree state against HEAD.
+func GetChangedFilesFromWorktree(repoRoot string) ([]string, error) {
+	out, err := runGit(repoRoot, "diff", "--name-only", "HEAD")
+	if err != nil {
+		return nil, err
+	}
+	trimmed := strings.TrimSpace(out)
+	if trimmed == "" {
+		return []string{}, nil
+	}
+	lines := strings.Split(trimmed, "\n")
+	files := make([]string, 0, len(lines))
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line != "" {
+			files = append(files, line)
+		}
+	}
+	return files, nil
+}
+
+// GetWorktreeDiffPatch returns staged/unstaged patch against HEAD.
+func GetWorktreeDiffPatch(repoRoot string) (string, error) {
+	out, err := runGit(repoRoot, "diff", "HEAD")
+	if err != nil {
+		return "", err
+	}
+	if len(out) > 4000 {
+		return out[:4000], nil
+	}
+	return out, nil
+}
+
 func runGit(repoRoot string, args ...string) (string, error) {
 	if _, err := exec.LookPath("git"); err != nil {
 		return "", fmt.Errorf("git is not installed or not available in PATH")
