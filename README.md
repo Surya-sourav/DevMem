@@ -1,4 +1,5 @@
-# devmem
+# <img width="250" height="250" alt="devmemlogo" src="https://github.com/user-attachments/assets/50fbbea5-5bcb-4986-89bc-4d0a170caa19" />
+### DevMem
 
 Developers have a context window too. DevMem is the fix.
 
