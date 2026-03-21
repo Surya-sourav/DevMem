@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevMem Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-alt: #0d0d0d;
+      --border: #1e1e1e;
+      --border-strong: #333333;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --text-muted: #444444;
+      --accent: #7c6cfc;
+      --success: #28c840;
+      --amber: #febc2e;
+      --radius-card: 8px;
+      --radius-sm: 6px;
+      --radius-btn: 4px;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 40px;
+      --space-6: 48px;
+      --space-8: 64px;
+      --space-10: 80px;
+      --space-12: 96px;
+      --space-15: 120px;
+      --max: 960px;
+      --max-narrow: 800px;
+      --mono: "SF Mono", "Fira Code", "Menlo", "Monaco", "Consolas", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: Inter, sans-serif;
+      line-height: 1.6;
+    }
+
+    #galaxy {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav,
+    main,
+    footer,
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 56px;
+      z-index: 100;
+      border-bottom: 1px solid #1a1a1a;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 var(--space-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .nav-links a {
+      transition: color 0.15s ease;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links .nav-docs-active {
+      color: #ffffff;
+      border-bottom-color: #7c6cfc;
+    }
+
+    .nav-install {
+      border: 1px solid #2a2a2a;
+      padding: 6px 14px;
+      border-radius: var(--radius-btn);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-install:hover {
+      background: #1a1a1a;
+      color: var(--text-primary);
+    }
+
+    .menu-btn {
+      display: none;
+      border: 1px solid #2a2a2a;
+      border-radius: var(--radius-btn);
+      background: #111111;
+      color: #cccccc;
+      font-size: 14px;
+      min-height: 34px;
+      min-width: 34px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    main {
+      margin-top: 56px;
+      min-height: calc(100vh - 56px);
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 240px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      border-right: 1px solid #1a1a1a;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+      padding: 32px 0;
+    }
+
+    .sidebar-header {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #444444;
+      padding: 0 24px 16px;
+    }
+
+    .sidebar-group {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .sidebar-group-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #444444;
+      padding: 16px 24px 8px;
+    }
+
+    .sidebar-link {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: #666666;
+      padding: 6px 24px 6px 32px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-link:hover {
+      color: #cccccc;
+      border-left-color: #333333;
+    }
+
+    .sidebar-link.active {
+      color: #ffffff;
+      border-left-color: #7c6cfc;
+      background: rgba(124, 108, 252, 0.06);
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 49;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .sidebar-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .docs-content {
+      margin-left: 240px;
+      min-height: calc(100vh - 56px);
+      max-width: 860px;
+      padding: 64px 64px 120px;
+    }
+
+    @media (min-width: 1340px) {
+      .docs-content {
+        margin-right: auto;
+      }
+    }
+
+    .docs-section {
+      padding-bottom: 80px;
+      border-bottom: 1px solid #1a1a1a;
+      margin-bottom: 80px;
+    }
+
+    .docs-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 24px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      line-height: 1.4;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 0 0 8px;
+      text-transform: uppercase;
+    }
+
+    .section-heading {
+      margin: 8px 0 24px;
+      font-family: "Instrument Serif", serif;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.2;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .section-body {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.8;
+      margin: 0 0 20px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 36px 0 12px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #cccccc;
+      margin: 20px 0 10px;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 16px;
+      padding-left: 18px;
+      color: #888888;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    li + li {
+      margin-top: 4px;
+    }
+
+    .inline-code {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: #161616;
+      border: 1px solid #1e1e1e;
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: #cccccc;
+    }
+
+    .feature-grid,
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .doc-card {
+      background: #111111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .doc-card h4 {
+      margin-top: 0;
+      color: #ffffff;
+    }
+
+    .step-flow {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .step-box {
+      border: 1px solid #1e1e1e;
+      background: #111111;
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .step-num {
+      color: #7c6cfc;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+      padding-top: 2px;
+    }
+
+    .flow-horizontal {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .flow-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .flow-box {
+      border: 1px solid #1e1e1e;
+      background: #111111;
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 130px;
+    }
+
+    .flow-title {
+      color: #ffffff;
+      font-size: 14px;
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+
+    .flow-copy {
+      color: #888888;
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .callout,
+    .warning {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 18px 0;
+    }
+
+    .callout {
+      background: rgba(124, 108, 252, 0.06);
+      border: 1px solid rgba(124, 108, 252, 0.2);
+    }
+
+    .warning {
+      background: rgba(254, 188, 46, 0.06);
+      border: 1px solid rgba(254, 188, 46, 0.2);
+    }
+
+    .callout-label,
+    .warning-label {
+      font-size: 12px;
+      font-weight: 500;
+      margin: 0 0 8px;
+    }
+
+    .callout-label {
+      color: #7c6cfc;
+    }
+
+    .warning-label {
+      color: #febc2e;
+    }
+
+    .callout p,
+    .warning p {
+      color: #888888;
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .code-panel {
+      background: #0d0d0d;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      margin: 16px 0 18px;
+      overflow: hidden;
+    }
+
+    .code-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #444444;
+      border-bottom: 1px solid #1e1e1e;
+      padding: 10px 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .code-panel pre {
+      margin: 0;
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #c9c9c9;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .terminal-body {
+      margin: 0;
+      padding: 20px 24px;
+      white-space: pre;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.8;
+      color: #888888;
+    }
+
+    .prompt { color: #7c6cfc; }
+    .cmd { color: #ffffff; }
+    .ok { color: #28c840; }
+    .mod { color: #7c6cfc; }
+    .meta { color: #444444; }
+    .num { color: #febc2e; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 16px 0 20px;
+    }
+
+    thead th {
+      background: #111111;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #444444;
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    tbody td {
+      font-size: 13px;
+      color: #888888;
+      padding: 10px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      vertical-align: top;
+    }
+
+    tbody td:first-child {
+      color: #cccccc;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 48px 24px;
+      margin-left: 240px;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .footer-brand {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: var(--space-1);
+    }
+
+    .footer-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: var(--space-1);
+    }
+
+    .footer-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: var(--radius-btn);
+    }
+
+    .footer-copy {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer-love {
+      max-width: 960px;
+      margin: var(--space-2) auto 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      max-width: 960px;
+      margin: 10px auto 0;
+      text-align: center;
+      color: #333333;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-3);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links a {
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 1023px) {
+      .flow-horizontal {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .flow-3,
+      .feature-grid,
+      .card-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .docs-content {
+        padding: 40px 28px 100px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      #sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+      }
+
+      #sidebar.open {
+        transform: translateX(0);
+      }
+
+      .docs-content {
+        margin-left: 0;
+        padding: 32px 20px;
+      }
+
+      .flow-horizontal {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        margin-left: 0;
+        padding: 40px 20px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="galaxy"></canvas>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="./index.html">devmem</a>
+      <button id="menu-btn" class="menu-btn" aria-label="Open documentation menu">☰</button>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a class="nav-docs-active" href="./docs.html">Docs</a>
+        <a href="https://github.com/Surya-sourav/DevMem" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="nav-install" href="#installation">Install</a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+  <aside id="sidebar" aria-label="Documentation sidebar">
+    <p class="sidebar-header">Documentation</p>
+
+    <ul class="sidebar-group">
+      <li class="sidebar-group-label">Overview</li>
+      <li><a class="sidebar-link" href="#what-is-devmem">What is DevMem?</a></li>
+      <li><a class="sidebar-link" href="#how-it-works">How it works</a></li>
+      <li><a class="sidebar-link" href="#installation">Installation</a></li>
+
+      <li class="sidebar-group-label">Commands</li>
+      <li><a class="sidebar-link" href="#cmd-auth">devmem auth</a></li>
+      <li><a class="sidebar-link" href="#cmd-init">devmem init</a></li>
+      <li><a class="sidebar-link" href="#cmd-capture">devmem capture</a></li>
+      <li><a class="sidebar-link" href="#cmd-status">devmem status</a></li>
+      <li><a class="sidebar-link" href="#cmd-query">devmem query</a></li>
+
+      <li class="sidebar-group-label">Under the hood</li>
+      <li><a class="sidebar-link" href="#filesystem-crawler">Filesystem crawler</a></li>
+      <li><a class="sidebar-link" href="#module-detection">Module detection</a></li>
+      <li><a class="sidebar-link" href="#ai-pipeline">AI pipeline</a></li>
+      <li><a class="sidebar-link" href="#prompt-architecture">Prompt architecture</a></li>
+      <li><a class="sidebar-link" href="#concurrent-analysis">Concurrent analysis</a></li>
+
+      <li class="sidebar-group-label">File structure</li>
+      <li><a class="sidebar-link" href="#devmem-directory">.devmem/ directory</a></li>
+      <li><a class="sidebar-link" href="#module-docs-schema">Module docs schema</a></li>
+      <li><a class="sidebar-link" href="#changelog-schema">Changelog schema</a></li>
+      <li><a class="sidebar-link" href="#master-architecture-schema">Master architecture schema</a></li>
+
+      <li class="sidebar-group-label">Configuration</li>
+      <li><a class="sidebar-link" href="#config-reference">config.json reference</a></li>
+      <li><a class="sidebar-link" href="#ignore-rules">Ignore rules</a></li>
+      <li><a class="sidebar-link" href="#module-overrides">Module overrides</a></li>
+
+      <li class="sidebar-group-label">Git integration</li>
+      <li><a class="sidebar-link" href="#post-commit-hook">Post-commit hook</a></li>
+      <li><a class="sidebar-link" href="#capture-flow">Capture flow</a></li>
+      <li><a class="sidebar-link" href="#diff-resolution">Diff resolution</a></li>
+    </ul>
+  </aside>
+
+  <main class="docs-content">
+    <section id="what-is-devmem" class="docs-section">
+      <p class="section-label">Overview</p>
+      <h1 class="section-heading">What is DevMem?</h1>
+      <p class="section-body">DevMem is a command-line tool that gives your codebase a persistent memory. It crawls your repository on first run, uses AI to understand and document every module it finds, and then watches your git commits to keep that documentation accurate forever.</p>
+      <p class="section-body">The core insight behind DevMem is that documentation written once immediately starts lying. The moment a function is refactored, a module is split, or a dependency is added, any static documentation written before that change becomes a liability rather than an asset. DevMem solves this by making documentation a continuous process tied to the one workflow developers never skip: committing code.</p>
+
+      <div class="feature-grid">
+        <article class="doc-card">
+          <h4>The problem it solves</h4>
+          <p class="section-body">Modern codebases grow faster than any individual can track. AI-assisted development accelerates this further. Code is written and merged faster than documentation can follow. DevMem acts as the system of record that humans cannot maintain manually.</p>
+        </article>
+        <article class="doc-card">
+          <h4>The mechanism</h4>
+          <p class="section-body">On <span class="inline-code">devmem init</span>, the entire codebase is crawled and documented in parallel. On every subsequent <span class="inline-code">devmem capture</span>, only the changed modules are updated. Every change is linked to its git commit hash, making documentation history and code history permanently aligned.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="docs-section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-heading">How it works</h2>
+      <p class="section-body">DevMem operates in two distinct modes: the initial documentation pass and the continuous capture loop. Understanding both is essential to understanding why the tool is designed the way it is.</p>
+
+      <h3>Initial pass - devmem init</h3>
+      <p class="section-body">When you run <span class="inline-code">devmem init</span> for the first time in a repository, DevMem executes five sequential phases. Each phase is a prerequisite for the next. The tool does not skip phases based on partial state.</p>
+
+      <div class="step-flow">
+        <article class="step-box">
+          <div class="step-num">1</div>
+          <div>
+            <h4>Filesystem crawl</h4>
+            <p class="section-body">The entire directory tree is walked using Go's <span class="inline-code">os.ReadDir</span> recursively. Every file and directory is recorded as a FileNode in a tree structure. Ignore rules from <span class="inline-code">.gitignore</span> and <span class="inline-code">.devmemignore</span> are applied during the walk. The complete tree is written to <span class="inline-code">.devmem/tree.json</span>.</p>
+          </div>
+        </article>
+
+        <article class="step-box">
+          <div class="step-num">2</div>
+          <div>
+            <h4>Module detection</h4>
+            <p class="section-body">The FileNode tree is scored directory by directory. Each directory receives points based on structural signals: README, entry file presence, directory depth, and source file density. Convention directories like <span class="inline-code">internal/</span>, <span class="inline-code">pkg/</span>, and <span class="inline-code">vendor/</span> are recursed into but not chosen as roots.</p>
+          </div>
+        </article>
+
+        <article class="step-box">
+          <div class="step-num">3</div>
+          <div>
+            <h4>User confirmation</h4>
+            <p class="section-body">Detected modules are printed to the terminal and must be confirmed, edited, or augmented before AI analysis starts. This step is mandatory because wrong module boundaries create low-quality documentation that is difficult to fix later.</p>
+          </div>
+        </article>
+
+        <article class="step-box">
+          <div class="step-num">4</div>
+          <div>
+            <h4>Parallel AI analysis</h4>
+            <p class="section-body">One goroutine is spawned per confirmed module. A semaphore channel limits concurrent AI calls (default 5). Each goroutine builds module context from a compact file tree and entry-file excerpt, calls the model, and streams results back over a channel. Failures are isolated to the affected module.</p>
+          </div>
+        </article>
+
+        <article class="step-box">
+          <div class="step-num">5</div>
+          <div>
+            <h4>Master architecture</h4>
+            <p class="section-body">After module analysis completes, a final architecture call synthesizes module summaries, dependency relationships, technology stack signals, and data flow. It outputs both markdown and mermaid dependency edges.</p>
+          </div>
+        </article>
+      </div>
+
+      <h3>Continuous loop - devmem capture</h3>
+      <p class="section-body">After init, every capture run follows a lean, repeatable flow focused on changed modules only.</p>
+
+      <div class="flow-3">
+        <article class="flow-box">
+          <p class="flow-title">Read diff</p>
+          <p class="flow-copy">Collect commit and worktree changes from git so documentation reflects both committed and in-progress edits.</p>
+        </article>
+        <article class="flow-box">
+          <p class="flow-title">Classify change</p>
+          <p class="flow-copy">Use a fast model call to identify change type, summarize intent, and detect structural updates.</p>
+        </article>
+        <article class="flow-box">
+          <p class="flow-title">Patch docs</p>
+          <p class="flow-copy">Update only affected module sections, append changelog entries, and regenerate master architecture only when required.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="installation" class="docs-section">
+      <p class="section-label">Installation</p>
+      <h2 class="section-heading">Getting started in 30 seconds</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Requirement</th>
+            <th>Version</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Go</td>
+            <td>1.21 or higher</td>
+            <td>Required to build and install</td>
+          </tr>
+          <tr>
+            <td>Git</td>
+            <td>Any modern version</td>
+            <td>Required for capture and status commands</td>
+          </tr>
+          <tr>
+            <td>Anthropic API key</td>
+            <td>-</td>
+            <td>Required for all AI operations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Step 1 - Install DevMem</h3>
+      <div class="code-panel">
+        <div class="code-label">bash</div>
+        <pre>go install github.com/yourorg/devmem@latest</pre>
+      </div>
+
+      <h3>Step 2 - Initialize your repository</h3>
+      <div class="code-panel">
+        <div class="code-label">bash</div>
+        <pre>cd your-project
+devmem init</pre>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Info</p>
+        <p>Your API key is stored in the macOS Keychain (or OS equivalent on Linux/Windows) using the system credential store. It is never written to disk in plain text and never included in any file that could be accidentally committed.</p>
+      </div>
+
+
+    <section id="cmd-init" class="docs-section">
+      <p class="section-label">Commands</p>
+      <h2 class="section-heading">devmem init</h2>
+      <p class="section-body">Initialization command. Run once per repository to crawl the tree, detect modules, run parallel AI analysis, and generate master architecture. It is safe to re-run and idempotent.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Flag</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>--dir</td>
+            <td>Current working directory</td>
+            <td>Repository root to operate on</td>
+          </tr>
+          <tr>
+            <td>--model</td>
+            <td>claude-sonnet-4-20250514</td>
+            <td>Anthropic model for all AI calls</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="code-panel">
+        <div class="code-label">terminal session</div>
+        <pre class="terminal-body"><span class="prompt">$</span> <span class="cmd">devmem init</span>
+
+  Crawling codebase...           <span class="ok">done</span>  (<span class="num">312</span> files, <span class="num">0.1s</span>)
+  Detecting modules...           found <span class="num">7</span> candidates
+
+  Detected modules:
+    <span class="mod">auth</span>       src/auth/         <span class="meta">(score: 7)</span>
+    <span class="mod">api</span>        src/api/          <span class="meta">(score: 6)</span>
+    <span class="mod">db</span>         internal/db/      <span class="meta">(score: 5)</span>
+    <span class="mod">worker</span>     internal/worker/  <span class="meta">(score: 4)</span>
+    <span class="mod">config</span>     pkg/config/       <span class="meta">(score: 3)</span>
+
+  Confirm? [Y/n]: Y
+
+  Analysing modules (<span class="num">7</span> total, max <span class="num">5</span> parallel)...
+    [<span class="num">1</span>/<span class="num">7</span>] <span class="mod">auth</span>      <span class="ok">✓ done</span>  (<span class="num">1.2s</span>)
+    [<span class="num">3</span>/<span class="num">7</span>] <span class="mod">api</span>       <span class="ok">✓ done</span>  (<span class="num">1.4s</span>)
+    [<span class="num">2</span>/<span class="num">7</span>] <span class="mod">db</span>        <span class="ok">✓ done</span>  (<span class="num">1.8s</span>)
+    [<span class="num">5</span>/<span class="num">7</span>] <span class="mod">config</span>    <span class="ok">✓ done</span>  (<span class="num">0.9s</span>)
+    [<span class="num">4</span>/<span class="num">7</span>] <span class="mod">worker</span>    <span class="ok">✓ done</span>  (<span class="num">2.1s</span>)
+
+  Generating master architecture...  <span class="ok">✓ done</span>  (<span class="num">2.3s</span>)
+
+  devmem initialised. <span class="num">7</span> modules documented.</pre>
+      </div>
+
+      <h3>What gets created</h3>
+      <div class="code-panel">
+        <div class="code-label">.devmem structure</div>
+        <pre>.devmem/
+├── config.json                      Module map, ignore rules, model config
+├── state.json                       Init timestamp, last commit hash, module count
+├── tree.json                        Complete FileNode snapshot
+└── docs/
+    ├── master-architecture.md       Full system overview with module table
+    ├── master-architecture.mermaid  Mermaid graph of module dependencies
+    └── modules/
+        ├── auth.md
+        ├── api.md
+        └── ...</pre>
+      </div>
+
+      <div class="callout">
+        <p class="callout-label">Idempotency</p>
+        <p>Running init again regenerates module docs and master architecture from scratch. Existing changelog entries are preserved. Init does not delete or rewrite <span class="inline-code">.devmem/changelog/</span>.</p>
+      </div>
+    </section>
+
+    <section id="cmd-capture" class="docs-section">
+      <p class="section-label">Commands</p>
+      <h2 class="section-heading">devmem capture</h2>
+      <p class="section-body">Reads repository changes, identifies affected modules, updates docs, and writes changelog entries. This is the command that keeps documentation alive.</p>
+
+      <div class="flow-horizontal">
+        <article class="flow-box">
+          <p class="flow-title">Read diff</p>
+          <p class="flow-copy"><span class="inline-code">git diff HEAD~1 --name-only</span> for changed files and <span class="inline-code">git diff HEAD~1</span> for full patch capped to 4k chars before AI.</p>
+        </article>
+        <article class="flow-box">
+          <p class="flow-title">Resolve modules</p>
+          <p class="flow-copy">Changed paths map against module path definitions in <span class="inline-code">config.json</span>. Unknown paths produce warnings but do not abort.</p>
+        </article>
+        <article class="flow-box">
+          <p class="flow-title">AI classify + patch</p>
+          <p class="flow-copy">Classification returns change type and summary. Patch call returns only changed doc sections; unchanged text stays untouched.</p>
+        </article>
+        <article class="flow-box">
+          <p class="flow-title">Write outputs</p>
+          <p class="flow-copy">Writes <span class="inline-code">.devmem/changelog/&lt;commit&gt;.md</span>, patches module docs, updates <span class="inline-code">changed_in</span>, and advances <span class="inline-code">state.json</span>.</p>
+        </article>
+      </div>
+
+      <h3>Change type taxonomy</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>feature</td><td>New capability added</td></tr>
+          <tr><td>fix</td><td>Bug correction</td></tr>
+          <tr><td>refactor</td><td>Internal restructure, no behavior change</td></tr>
+          <tr><td>perf</td><td>Performance or memory improvement</td></tr>
+          <tr><td>breaking</td><td>Public API or contract changed</td></tr>
+          <tr><td>docs</td><td>Documentation-only change</td></tr>
+          <tr><td>test</td><td>Test additions or changes</td></tr>
+          <tr><td>config</td><td>Build, environment, or dependency change</td></tr>
+          <tr><td>chore</td><td>Maintenance and cleanup</td></tr>
+          <tr><td>structural</td><td>Module added/removed or dependency graph changed</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <p class="warning-label">Warning</p>
+        <p>The <span class="inline-code">structural</span> type is the only classification that triggers master architecture regeneration. All other types patch module docs surgically for faster capture runs.</p>
+      </div>
+
+      <h3>Post-commit hook</h3>
+      <p class="section-body">DevMem can install a post-commit hook so capture runs automatically after each commit.</p>
+      <div class="code-panel">
+        <div class="code-label">bash</div>
+        <pre># Install the hook
+devmem init   # hook is offered during init
+
+# Or install manually
+devmem capture --install-hook</pre>
+      </div>
+
+      <div class="code-panel">
+        <div class="code-label">.git/hooks/post-commit</div>
+        <pre>#!/bin/sh
+# Installed by devmem
+devmem capture</pre>
+      </div>
+    </section>
+
+    <section id="cmd-status" class="docs-section">
+      <p class="section-label">Commands</p>
+      <h2 class="section-heading">devmem status</h2>
+      <p class="section-body">Compares current git HEAD against the last captured commit in <span class="inline-code">state.json</span> and reports modules with undocumented changes.</p>
+
+      <div class="code-panel">
+        <div class="code-label">example output</div>
+        <pre>devmem status
+
+  Last captured commit: abc123f  (2 commits behind)
+  Current commit:       def789g
+
+  Modules with undocumented changes:
+    api        src/api/handler.go, src/api/routes.go
+    worker     internal/worker/processor.go
+
+  Run: devmem capture  to update docs</pre>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>All modules are up to date</td></tr>
+          <tr><td>1</td><td>One or more modules have undocumented changes</td></tr>
+          <tr><td>2</td><td>DevMem not initialized in this directory</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <p class="callout-label">CI usage</p>
+        <p>Because status exits with code 1 when documentation is stale, it works as a CI gate for enforcing documentation freshness in pull requests.</p>
+      </div>
+
+      <div class="code-panel">
+        <div class="code-label">GitHub Actions</div>
+        <pre>- name: Check documentation is current
+  run: devmem status</pre>
+      </div>
+    </section>
+
+    <section id="cmd-query" class="docs-section">
+      <p class="section-label">Commands</p>
+      <h2 class="section-heading">devmem query</h2>
+      <p class="section-body">Answers natural-language questions about your codebase, grounded in living docs from <span class="inline-code">.devmem/docs/</span>. Responses are streamed to stdout.</p>
+
+      <div class="code-panel">
+        <div class="code-label">usage</div>
+        <pre>devmem query "&lt;question&gt;"</pre>
+      </div>
+
+      <div class="code-panel">
+        <div class="code-label">example queries</div>
+        <pre>$ devmem query "how does authentication work?"
+$ devmem query "which modules depend on the database layer?"
+$ devmem query "what changed in the auth module recently?"
+$ devmem query "explain the overall architecture in plain English"</pre>
+      </div>
+
+      <p class="section-body">The query command reads all module docs and master architecture docs, concatenates them as model context, and instructs the model to answer from provided documentation only. If the docs do not contain the answer, the model is instructed to say so explicitly.</p>
+
+      <div class="warning">
+        <p class="warning-label">Context window</p>
+        <p>For very large codebases, combined docs can approach model context limits. Scope the query with <span class="inline-code">--module</span> when needed: <span class="inline-code">devmem query --module auth "how are tokens validated?"</span>.</p>
+      </div>
+    </section>
+
+    <section id="filesystem-crawler" class="docs-section">
+      <p class="section-label">Under the hood</p>
+      <h2 class="section-heading">Filesystem crawler</h2>
+      <p class="section-body">The crawler is the foundation of DevMem and runs before any AI call or module detection. It is implemented in <span class="inline-code">internal/crawler/walker.go</span>.</p>
+      <p class="section-body">Starting at repository root, it recursively walks directories with <span class="inline-code">os.ReadDir</span>, constructing a complete in-memory tree with file metadata used by detection and prompt assembly.</p>
+
+      <div class="code-panel">
+        <div class="code-label">internal/crawler/walker.go</div>
+        <pre>type FileNode struct {
+    Name     string      `json:"name"`
+    Path     string      `json:"path"`      // relative to repo root
+    Type     string      `json:"type"`      // "file" | "dir"
+    Ext      string      `json:"ext,omitempty"`
+    Size     int64       `json:"size,omitempty"`
+    Children []*FileNode `json:"children,omitempty"`
+}</pre>
+      </div>
+
+      <h3>Ignore rules</h3>
+      <p class="section-body">Ignore rules are applied during traversal, not after collection. That avoids expensive reads in massive directories and keeps crawl fast on mixed-language repositories.</p>
+
+      <div class="code-panel">
+        <div class="code-label">default ignores</div>
+        <pre>.git
+.devmem
+node_modules
+vendor
+.venv
+__pycache__
+dist
+build
+*.lock
+*.sum
+*.min.js</pre>
+      </div>
+
+      <h3>Tree representation</h3>
+      <div class="card-grid-2">
+        <div class="code-panel">
+          <div class="code-label">tree.json (excerpt)</div>
+          <pre>{
+  "name": "DevMem",
+  "path": ".",
+  "type": "dir",
+  "children": [
+    {"name": "cmd", "path": "cmd", "type": "dir"},
+    {"name": "internal", "path": "internal", "type": "dir"}
+  ]
+}</pre>
+        </div>
+        <div class="code-panel">
+          <div class="code-label">AI prompt format</div>
+          <pre>.
+├── cmd/
+│   ├── init.go
+│   ├── capture.go
+│   └── query.go
+└── internal/
+    ├── crawler/
+    ├── ai/
+    └── state/</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="module-detection" class="docs-section">
+      <p class="section-label">Under the hood</p>
+      <h2 class="section-heading">Module detection</h2>
+      <p class="section-body">Module detection finds logical boundaries in any repository without parsing code. It uses structure-based scoring and configurable overrides.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Signal</th>
+            <th>Points</th>
+            <th>Condition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Own README</td><td>+3</td><td>Directory contains README.md directly</td></tr>
+          <tr><td>Entry file</td><td>+2</td><td>Contains main.go, index.ts, index.js, app.py, __init__.py, mod.rs, etc.</td></tr>
+          <tr><td>Shallow depth</td><td>+2</td><td>Depth 1-4 from repository root</td></tr>
+          <tr><td>Go package</td><td>+2</td><td>Directory has .go files directly</td></tr>
+          <tr><td>File count</td><td>+1</td><td>Contains more than 5 source files</td></tr>
+        </tbody>
+      </table>
+
+      <p class="section-body">Detection threshold is score >= 3 by default and score >= 2 for directories under convention roots like <span class="inline-code">internal/</span> and <span class="inline-code">pkg/</span>.</p>
+
+      <div class="callout">
+        <p class="callout-label">Convention directories</p>
+        <p>Convention roots are never selected as modules themselves, regardless of score. Their children are scored and considered as module candidates using a lower threshold.</p>
+      </div>
+
+      <p class="section-body">User-defined mappings in <span class="inline-code">.devmem/config.json</span> always win. Config-sourced modules are treated as authoritative and assigned top priority during deduplication.</p>
+    </section>
+
+    <section id="ai-pipeline" class="docs-section">
+      <p class="section-label">Under the hood</p>
+      <h2 class="section-heading">AI pipeline</h2>
+      <p class="section-body">DevMem uses four prompt types with distinct input shapes, output schemas, and validators to keep docs deterministic and machine-safe.</p>
+
+      <div class="card-grid-2">
+        <article class="doc-card">
+          <h4>Prompt A: Module analysis</h4>
+          <p class="section-body">Used in init. One call per module. Input includes module name, tree view, entry excerpt, and sibling modules. Output is ModuleAnalysis JSON.</p>
+        </article>
+        <article class="doc-card">
+          <h4>Prompt B: Change classification</h4>
+          <p class="section-body">Used in capture. Fast model call returns type enum, summary, breaking flag, and per-module summaries.</p>
+        </article>
+        <article class="doc-card">
+          <h4>Prompt C: Module doc patch</h4>
+          <p class="section-body">Used in capture for each affected module. Input includes current markdown + diff summary. Output is DocPatch JSON keyed by section title.</p>
+        </article>
+        <article class="doc-card">
+          <h4>Prompt D: Master architecture</h4>
+          <p class="section-body">Used in init and structural captures. Generates overview, tech stack, data flow, module summaries, and mermaid edges.</p>
+        </article>
+      </div>
+
+      <div class="warning">
+        <p class="warning-label">JSON-only contract</p>
+        <p>Each prompt requires raw JSON output only. No prose, no markdown fences. If a model still returns fenced JSON, DevMem strips fences and retries parsing safely before skipping invalid data.</p>
+      </div>
+    </section>
+
+    <section id="prompt-architecture" class="docs-section">
+      <p class="section-label">Under the hood</p>
+      <h2 class="section-heading">Prompt architecture</h2>
+      <p class="section-body">Prompt templates are separated by task and deliberately strict. Every prompt includes schema reminders, forbidden output forms, and deterministic field requirements to make parser behavior stable in production.</p>
+      <p class="section-body">The architecture keeps prompts short and purpose-built. Classification prompts remain compact and latency-optimized, while synthesis prompts include richer context and stricter dependency mapping instructions.</p>
+      <div class="code-panel">
+        <div class="code-label">prompt contract</div>
+        <pre>- First character must be {
+- Last character must be }
+- Return exactly one JSON object
+- Do not include markdown code fences
+- Fill all required fields even if value is an empty list</pre>
+      </div>
+    </section>
+
+    <section id="concurrent-analysis" class="docs-section">
+      <p class="section-label">Under the hood</p>
+      <h2 class="section-heading">Concurrent analysis</h2>
+      <p class="section-body">Module analysis during init is the slowest operation. DevMem runs module calls concurrently so total runtime approximates the slowest module call rather than the sum of all calls.</p>
+
+      <div class="code-panel">
+        <div class="code-label">cmd/init.go</div>
+        <pre>results := make(chan analysisResult, len(modules))
+sem := make(chan struct{}, cfg.MaxConcurrent)
+var wg sync.WaitGroup
+
+for _, mod := range modules {
+    wg.Add(1)
+    go func(m crawler.Module) {
+        defer wg.Done()
+        sem <- struct{}{}
+        defer func() { <-sem }()
+
+        analysis, err := aiClient.AnalyseModule(ctx, buildContext(tree, m))
+        results <- analysisResult{module: m, analysis: analysis, err: err}
+    }(mod)
+}
+
+go func() {
+    wg.Wait()
+    close(results)
+}()
+
+for r := range results {
+    // write docs as each result arrives
+}</pre>
+      </div>
+
+      <p class="section-body">The semaphore channel caps in-flight requests to avoid API throttling while keeping throughput high.</p>
+
+      <div class="warning">
+        <p class="warning-label">Closure capture bug</p>
+        <p>The goroutine accepts <span class="inline-code">mod</span> as a value parameter to avoid loop-variable capture. Capturing loop variables directly is a common Go concurrency bug.</p>
+      </div>
+    </section>
+
+    <section id="devmem-directory" class="docs-section">
+      <p class="section-label">File structure</p>
+      <h2 class="section-heading">.devmem/ directory</h2>
+      <p class="section-body">All generated artifacts live under <span class="inline-code">.devmem/</span> at repository root. Files are plain text, diff-friendly, and designed to be committed for historical traceability.</p>
+
+      <div class="code-panel">
+        <div class="code-label">complete tree</div>
+        <pre>.devmem/
+├── config.json              Configuration, module map, ignore rules
+├── state.json               Runtime state, last commit, module count
+├── tree.json                FileNode snapshot from last init
+├── docs/
+│   ├── master-architecture.md       System overview document
+│   ├── master-architecture.mermaid  Module dependency graph
+│   └── modules/
+│       ├── auth.md                  Per-module documentation
+│       ├── api.md
+│       └── ...
+└── changelog/
+    ├── abc123f4d.md                 One entry per captured commit
+    ├── def456g7h.md
+    └── ...</pre>
+      </div>
+    </section>
+
+    <section id="module-docs-schema" class="docs-section">
+      <p class="section-label">File structure</p>
+      <h2 class="section-heading">Module docs schema</h2>
+      <p class="section-body">Each module doc has machine-readable YAML frontmatter and human-readable markdown sections. Capture and status depend on frontmatter integrity for patching and drift checks.</p>
+
+      <div class="code-panel">
+        <div class="code-label">example: .devmem/docs/modules/auth.md</div>
+        <pre>---
+module: auth
+root_path: src/auth
+key_files:
+  - src/auth/handler.go
+  - src/auth/tokens.go
+  - src/auth/middleware.go
+depends_on:
+  - db
+  - config
+changed_in:
+  - abc123f4d
+  - def456g7h
+generated_at: 2025-03-21T14:32:00Z
+---
+
+# auth
+
+JWT-based authentication module handling token issuance,
+validation, and HTTP middleware for protected routes.
+
+## Purpose
+
+Provides stateless auth for all API endpoints using RS256-signed JWTs.
+
+## Key files
+
+- `src/auth/handler.go` - login/logout/refresh HTTP handlers
+- `src/auth/tokens.go` - token generation, validation, expiry logic
+- `src/auth/middleware.go` - Gin middleware, injects claims into context
+
+## Public API
+
+- `NewMiddleware(cfg Config) gin.HandlerFunc`
+- `IssueToken(userID string, claims Claims) (string, error)`
+- `ValidateToken(raw string) (*Claims, error)`
+
+## Dependencies
+
+- **db** - loads user records for credential validation
+- **config** - reads JWT secret and expiry settings
+
+## Tech notes
+
+Uses golang-jwt/jwt v5. Tokens are RS256 signed.
+Refresh tokens stored as opaque strings via the cache module.
+
+## Changelog
+
+- [abc123f4d](../changelog/abc123f4d.md) - Added token revocation
+- [def456g7h](../changelog/def456g7h.md) - Fixed expiry edge case</pre>
+      </div>
+    </section>
+
+    <section id="changelog-schema" class="docs-section">
+      <p class="section-label">File structure</p>
+      <h2 class="section-heading">Changelog schema</h2>
+      <p class="section-body">Each capture writes one changelog file per commit hash under <span class="inline-code">.devmem/changelog/</span>. The changelog body stores detailed narrative, while module docs only keep short linked summaries.</p>
+
+      <div class="code-panel">
+        <div class="code-label">example: .devmem/changelog/abc123f4d.md</div>
+        <pre>---
+commit: abc123f4d
+type: feature
+captured_at: 2026-03-22T09:14:22Z
+modules:
+  - auth
+  - api
+---
+
+# Capture abc123f4d
+
+## Summary
+Added token revocation endpoint and middleware checks for revoked JWT IDs.
+
+## Module updates
+- auth: Added revocation store lookup before token acceptance.
+- api: Added route wiring for revoke endpoint.
+
+## Diff context
+- src/auth/tokens.go
+- src/auth/middleware.go
+- src/api/routes.go</pre>
+      </div>
+    </section>
+
+    <section id="master-architecture-schema" class="docs-section">
+      <p class="section-label">File structure</p>
+      <h2 class="section-heading">Master architecture schema</h2>
+      <p class="section-body">Master architecture output includes a narrative markdown document and a mermaid graph file to visualize directional dependencies.</p>
+
+      <div class="card-grid-2">
+        <div class="code-panel">
+          <div class="code-label">.devmem/docs/master-architecture.md</div>
+          <pre># DevMem Architecture
+
+## System overview
+The CLI orchestrates crawl, AI analysis, state persistence, and git-linked documentation updates.
+
+## Module map
+- cmd
+- internal/crawler
+- internal/ai
+- internal/state
+- internal/git
+- internal/docs
+
+## Data flow
+1) Crawl -> 2) Detect modules -> 3) Analyze -> 4) Write docs -> 5) Capture diffs</pre>
+        </div>
+        <div class="code-panel">
+          <div class="code-label">.devmem/docs/master-architecture.mermaid</div>
+          <pre>graph TD
+  CMD[cmd] --> CRAWLER[crawler]
+  CMD --> AI[ai]
+  CMD --> STATE[state]
+  CMD --> GIT[git]
+  CMD --> DOCS[docs]
+  DOCS --> STATE</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="config-reference" class="docs-section">
+      <p class="section-label">Configuration</p>
+      <h2 class="section-heading">config.json reference</h2>
+      <p class="section-body"><span class="inline-code">.devmem/config.json</span> is generated during init and can be edited manually. Changes apply on the next init or capture run.</p>
+
+      <div class="code-panel">
+        <div class="code-label">.devmem/config.json</div>
+        <pre>{
+  "version": "1",
+  "ai_model": "claude-sonnet-4-20250514",
+  "max_concurrent": 5,
+  "ignore": [
+    "node_modules",
+    "vendor",
+    "*.test.go"
+  ],
+  "modules": {
+    "auth": {
+      "paths": ["src/auth"]
+    },
+    "api": {
+      "paths": ["src/api"]
+    }
+  }
+}</pre>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>version</td><td>string</td><td>"1"</td><td>Config schema version</td></tr>
+          <tr><td>ai_model</td><td>string</td><td>claude-sonnet-4-20250514</td><td>Anthropic model for AI calls</td></tr>
+          <tr><td>max_concurrent</td><td>number</td><td>5</td><td>Max simultaneous AI calls during init</td></tr>
+          <tr><td>ignore</td><td>array</td><td>defaults + custom</td><td>Extra ignore patterns for crawl</td></tr>
+          <tr><td>modules</td><td>object</td><td>auto-detected</td><td>Explicit module definitions overriding heuristics</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="ignore-rules" class="docs-section">
+      <p class="section-label">Configuration</p>
+      <h2 class="section-heading">Ignore rules</h2>
+      <p class="section-body">Ignore configuration merges three sources in order: built-in defaults, repository <span class="inline-code">.gitignore</span>, and repository <span class="inline-code">.devmemignore</span>. Project-local rules are ideal for generated directories, fixtures, and large snapshots that are irrelevant for documentation quality.</p>
+      <div class="code-panel">
+        <div class="code-label">.devmemignore example</div>
+        <pre># build outputs
+coverage/
+artifacts/
+
+# generated mocks
+**/mocks/
+
+# large snapshots
+**/*.snap</pre>
+      </div>
+    </section>
+
+    <section id="module-overrides" class="docs-section">
+      <p class="section-label">Configuration</p>
+      <h2 class="section-heading">Module overrides</h2>
+      <p class="section-body">Use module overrides when heuristics cannot capture your intended boundaries. Override entries lock module names and root paths so capture mapping remains stable across refactors.</p>
+      <div class="code-panel">
+        <div class="code-label">override example</div>
+        <pre>{
+  "modules": {
+    "platform-api": {
+      "paths": ["services/api", "internal/api"]
+    },
+    "platform-worker": {
+      "paths": ["services/worker"]
+    }
+  }
+}</pre>
+      </div>
+    </section>
+
+    <section id="post-commit-hook" class="docs-section">
+      <p class="section-label">Git integration</p>
+      <h2 class="section-heading">Post-commit hook</h2>
+      <p class="section-body">When enabled, post-commit runs capture automatically after each commit, keeping docs synchronized with code history without manual steps.</p>
+      <div class="code-panel">
+        <div class="code-label">hook script</div>
+        <pre>#!/bin/sh
+# Installed by devmem
+devmem capture</pre>
+      </div>
+    </section>
+
+    <section id="capture-flow" class="docs-section">
+      <p class="section-label">Git integration</p>
+      <h2 class="section-heading">Capture flow</h2>
+      <p class="section-body">Capture resolves committed and worktree changes in one run, maps each file to modules, and writes linked changelog outputs. Structural changes trigger architecture regeneration automatically.</p>
+      <div class="code-panel">
+        <div class="code-label">high-level flow</div>
+        <pre>collect committed diff + worktree diff
+-> map files to modules
+-> classify change
+-> patch modules
+-> write changelog
+-> update state.json
+-> regenerate master architecture only if structural</pre>
+      </div>
+    </section>
+
+    <section id="diff-resolution" class="docs-section">
+      <p class="section-label">Git integration</p>
+      <h2 class="section-heading">Diff resolution</h2>
+      <p class="section-body">Diff extraction prefers exact commit boundaries but falls back to worktree analysis when needed. Patch payloads are truncated safely to protect model context budget while preserving key semantic chunks.</p>
+      <p class="section-body">Unknown files are reported as warnings, not errors, so capture still succeeds for known modules. This design prevents one unmapped path from blocking documentation for every changed module.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-wrap">
+          <img class="footer-logo" src="./images/devmemlogo.png" alt="DevMem logo">
+          <p class="footer-brand">devmem</p>
+        </div>
+        <p class="footer-copy">AI-powered memory for your codebase.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Surya-sourav/DevMem">GitHub</a>
+        <a href="./docs.html">Docs</a>
+        <a href="https://www.linkedin.com/in/suryaparida/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="#installation">MIT License</a>
+      </div>
+    </div>
+    <p class="footer-love">Made with love ❤️ for developers by a Developer</p>
+    <p class="footer-note">Documentation is generated by DevMem itself. This page was last updated by devmem capture.</p>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll("section[id]");
+    const sidebarLinks = document.querySelectorAll(".sidebar-link");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          sidebarLinks.forEach((link) => link.classList.remove("active"));
+          const active = document.querySelector('.sidebar-link[href="#' + entry.target.id + '"]');
+          if (active) {
+            active.classList.add("active");
+          }
+        }
+      });
+    }, {
+      rootMargin: "-10% 0px -80% 0px",
+      threshold: 0
+    });
+
+    sections.forEach((section) => observer.observe(section));
+
+    const menuBtn = document.getElementById("menu-btn");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("visible");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("visible");
+    });
+
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        overlay.classList.remove("visible");
+      });
+    });
+  </script>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById("galaxy");
+      const ctx = canvas.getContext("2d");
+
+      let starsLayer1 = [];
+      let starsLayer2 = [];
+      let starsLayer3 = [];
+      let milkyWayStars = [];
+      let shootingStars = [];
+
+      let startTime = 0;
+      let lastFrame = 0;
+      let nextShootingAt = 0;
+      let resizeTimer = null;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function randInt(min, max) {
+        return Math.floor(rand(min, max + 1));
+      }
+
+      function makeStar(layer, options) {
+        let colorR = 255;
+        let colorG = 255;
+        let colorB = 255;
+
+        if (layer === 2) {
+          const tint = Math.random();
+          if (tint < 0.20) {
+            colorR = 255;
+            colorG = 240;
+            colorB = 220;
+          } else if (tint < 0.35) {
+            colorR = 220;
+            colorG = 235;
+            colorB = 255;
+          }
+        }
+
+        if (layer === 3) {
+          const tintGroup = randInt(0, 2);
+          if (tintGroup === 1) {
+            colorR = 255;
+            colorG = 240;
+            colorB = 220;
+          } else if (tintGroup === 2) {
+            colorR = 220;
+            colorG = 235;
+            colorB = 255;
+          }
+        }
+
+        return {
+          x: rand(0, canvas.width),
+          y: rand(0, canvas.height),
+          radius: rand(options.minRadius, options.maxRadius),
+          opacity: rand(options.minOpacity, options.maxOpacity),
+          twinkleSpeed: rand(options.minTwinkle, options.maxTwinkle),
+          twinkleOffset: rand(0, Math.PI * 2),
+          colorR,
+          colorG,
+          colorB,
+          layer
+        };
+      }
+
+      function inMilkyWayBand(x, y) {
+        const x1 = canvas.width * 0.10;
+        const y1 = canvas.height;
+        const x2 = canvas.width * 0.90;
+        const y2 = 0;
+        const bandWidth = canvas.height * 0.30;
+
+        const A = y2 - y1;
+        const B = x1 - x2;
+        const C = x2 * y1 - x1 * y2;
+        const distance = Math.abs(A * x + B * y + C) / Math.sqrt(A * A + B * B);
+
+        return distance <= bandWidth * 0.5;
+      }
+
+      function generateMilkyWayStars() {
+        milkyWayStars = [];
+        while (milkyWayStars.length < 500) {
+          const x = rand(0, canvas.width);
+          const y = rand(0, canvas.height);
+          if (!inMilkyWayBand(x, y)) {
+            continue;
+          }
+          milkyWayStars.push({
+            x,
+            y,
+            radius: rand(0.2, 0.5),
+            opacity: rand(0.15, 0.35),
+            twinkleSpeed: rand(3000, 6000),
+            twinkleOffset: rand(0, Math.PI * 2),
+            colorR: 255,
+            colorG: 255,
+            colorB: 255,
+            layer: 0
+          });
+        }
+      }
+
+      function generateStars() {
+        starsLayer1 = [];
+        starsLayer2 = [];
+        starsLayer3 = [];
+
+        for (let i = 0; i < 800; i++) {
+          starsLayer1.push(makeStar(1, {
+            minRadius: 0.3,
+            maxRadius: 0.8,
+            minOpacity: 0.2,
+            maxOpacity: 0.5,
+            minTwinkle: 3000,
+            maxTwinkle: 6000
+          }));
+        }
+
+        for (let i = 0; i < 300; i++) {
+          starsLayer2.push(makeStar(2, {
+            minRadius: 0.8,
+            maxRadius: 1.5,
+            minOpacity: 0.4,
+            maxOpacity: 0.8,
+            minTwinkle: 2000,
+            maxTwinkle: 4000
+          }));
+        }
+
+        for (let i = 0; i < 60; i++) {
+          starsLayer3.push(makeStar(3, {
+            minRadius: 1.5,
+            maxRadius: 3.0,
+            minOpacity: 0.7,
+            maxOpacity: 1.0,
+            minTwinkle: 1500,
+            maxTwinkle: 3000
+          }));
+        }
+
+        generateMilkyWayStars();
+      }
+
+      function drawNebulae() {
+        const w = canvas.width;
+        const h = canvas.height;
+
+        const n1 = ctx.createRadialGradient(w * 0.15, h * 0.20, 0, w * 0.15, h * 0.20, w * 0.35);
+        n1.addColorStop(0, "rgba(80, 40, 140, 0.06)");
+        n1.addColorStop(0.4, "rgba(60, 20, 100, 0.03)");
+        n1.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n1;
+        ctx.fillRect(0, 0, w, h);
+
+        const n2 = ctx.createRadialGradient(w * 0.85, h * 0.75, 0, w * 0.85, h * 0.75, w * 0.40);
+        n2.addColorStop(0, "rgba(20, 60, 100, 0.07)");
+        n2.addColorStop(0.4, "rgba(10, 40, 80, 0.03)");
+        n2.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n2;
+        ctx.fillRect(0, 0, w, h);
+
+        const n3 = ctx.createRadialGradient(w * 0.70, h * 0.30, 0, w * 0.70, h * 0.30, w * 0.25);
+        n3.addColorStop(0, "rgba(100, 30, 60, 0.04)");
+        n3.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = n3;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      function starOpacity(star, elapsed) {
+        const phase = (elapsed / star.twinkleSpeed) * Math.PI * 2 + star.twinkleOffset;
+        const twinkle = Math.sin(phase) * 0.3;
+        return Math.max(0.05, Math.min(1.0, star.opacity + twinkle));
+      }
+
+      function drawStar(star, elapsed) {
+        const currentOpacity = starOpacity(star, elapsed);
+
+        if (star.layer === 3) {
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + (currentOpacity * 0.035) + ")";
+          ctx.arc(star.x, star.y, star.radius * 2.2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + currentOpacity + ")";
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawStarCollections(elapsed) {
+        for (let i = 0; i < milkyWayStars.length; i++) {
+          drawStar(milkyWayStars[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer1.length; i++) {
+          drawStar(starsLayer1[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer2.length; i++) {
+          drawStar(starsLayer2[i], elapsed);
+        }
+        for (let i = 0; i < starsLayer3.length; i++) {
+          drawStar(starsLayer3[i], elapsed);
+        }
+      }
+
+      function scheduleNextShooting(now) {
+        nextShootingAt = now + 2000;
+      }
+
+      function spawnShootingStar(now) {
+        const startX = rand(canvas.width * 0.10, canvas.width * 0.60);
+        const startY = rand(canvas.height * 0.05, canvas.height * 0.40);
+        const angle = rand(20, 45) * Math.PI / 180;
+        const length = rand(80, 180);
+        const duration = rand(600, 900);
+
+        shootingStars.push({
+          startX,
+          startY,
+          angle,
+          length,
+          duration,
+          createdAt: now,
+          speed: rand(500, 900)
+        });
+      }
+
+      function drawShootingStars(now) {
+        if (now >= nextShootingAt) {
+          spawnShootingStar(now);
+          scheduleNextShooting(now);
+        }
+
+        const active = [];
+        for (let i = 0; i < shootingStars.length; i++) {
+          const s = shootingStars[i];
+          const t = (now - s.createdAt) / s.duration;
+          if (t >= 1) {
+            continue;
+          }
+
+          const distance = s.speed * ((now - s.createdAt) / 1000);
+          const headX = s.startX + Math.cos(s.angle) * distance;
+          const headY = s.startY + Math.sin(s.angle) * distance;
+          const tailX = headX - Math.cos(s.angle) * s.length;
+          const tailY = headY - Math.sin(s.angle) * s.length;
+
+          const gradient = ctx.createLinearGradient(tailX, tailY, headX, headY);
+          gradient.addColorStop(0, "rgba(255,255,255,0)");
+          gradient.addColorStop(1, "rgba(255,255,255,0.7)");
+
+          ctx.beginPath();
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 1;
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(headX, headY);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(255,255,255,1)";
+          ctx.arc(headX, headY, 1, 0, Math.PI * 2);
+          ctx.fill();
+
+          active.push(s);
+        }
+        shootingStars = active;
+      }
+
+      function drawFrame(now) {
+        if (now - lastFrame < 16) {
+          requestAnimationFrame(drawFrame);
+          return;
+        }
+        lastFrame = now;
+
+        const elapsed = now - startTime;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawNebulae();
+        drawStarCollections(elapsed);
+        drawShootingStars(now);
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function drawStatic() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawNebulae();
+
+        const all = [].concat(milkyWayStars, starsLayer1, starsLayer2, starsLayer3);
+        for (let i = 0; i < all.length; i++) {
+          const star = all[i];
+          if (star.layer === 3) {
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + (star.opacity * 0.035) + ")";
+            ctx.arc(star.x, star.y, star.radius * 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + star.colorR + ", " + star.colorG + ", " + star.colorB + ", " + star.opacity + ")";
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        generateStars();
+        if (reducedMotion) {
+          drawStatic();
+        }
+      }
+
+      function onResize() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(resizeCanvas, 150);
+      }
+
+      window.addEventListener("resize", onResize);
+
+      window.addEventListener("load", function () {
+        resizeCanvas();
+        startTime = performance.now();
+        lastFrame = startTime;
+        scheduleNextShooting(startTime);
+        if (reducedMotion) {
+          drawStatic();
+          return;
+        }
+        requestAnimationFrame(drawFrame);
+      });
+    })();
+  </script>
+</body>
+</html>
