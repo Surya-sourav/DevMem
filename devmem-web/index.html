@@ -1,1396 +1,978 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<title></title>
-	<meta content="summary_large_image" name="twitter:card" />
-	<meta content="website" property="og:type" />
-	<meta content="" property="og:description" />
-	<meta content="" property="og:url" />
-	<meta content="images/1_14200966_large.jpg" property="og:image" />
-	<meta content="" property="og:title" />
-	<meta content="" name="description" />
-	<meta charset="utf-8" />
-	<meta content="width=device-width" name="viewport" />
-	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet" type="text/css" />
-	<style>
-		.bee-row,
-		.bee-row-content {
-			position: relative
-		}
-
-		.bee-button-content {
-			text-align: center
-		}
-
-		body {
-			background-color: #f0f4ef;
-			color: #000000;
-			font-family: Inter, Helvetica
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-1 a,
-		.bee-row-10 .bee-col-2 .bee-block-3 a,
-		.bee-row-11 .bee-col-1 .bee-block-3 a,
-		.bee-row-13 .bee-col-1 .bee-block-2 a,
-		.bee-row-13 .bee-col-4 .bee-block-2 a,
-		.bee-row-6 .bee-col-1 .bee-block-3 a,
-		.bee-row-7 .bee-col-1 .bee-block-2 a,
-		.bee-row-8 .bee-col-1 .bee-block-5 a,
-		.bee-row-9 .bee-col-1 .bee-block-3 a,
-		.bee-row-9 .bee-col-2 .bee-block-3 a,
-		.bee-row-9 .bee-col-3 .bee-block-3 a,
-		a {
-			color: #ccf4c2
-		}
-
-		* {
-			box-sizing: border-box
-		}
-
-		body,
-		h1,
-		h2,
-		p {
-			margin: 0
-		}
-
-		.bee-desktop_hide,
-		.bee-menu .bee-hamburger-trigger {
-			display: none
-		}
-
-		.bee-row-content {
-			max-width: 1300px;
-			margin: 0 auto;
-			display: flex
-		}
-
-		.bee-row-content .bee-col-w2 {
-			flex-basis: 16.6666666667%
-		}
-
-		.bee-row-content .bee-col-w3 {
-			flex-basis: 25%
-		}
-
-		.bee-row-content .bee-col-w4 {
-			flex-basis: 33.3333333333%
-		}
-
-		.bee-row-content .bee-col-w5 {
-			flex-basis: 41.6666666667%
-		}
-
-		.bee-row-content .bee-col-w6 {
-			flex-basis: 50%
-		}
-
-		.bee-row-content .bee-col-w7 {
-			flex-basis: 58.3333333333%
-		}
-
-		.bee-row-content .bee-col-w8 {
-			flex-basis: 66.6666666667%
-		}
-
-		.bee-row-content .bee-col-w12 {
-			flex-basis: 100%
-		}
-
-		.bee-button a,
-		.bee-icon .bee-icon-label-right a,
-		.bee-menu ul li a {
-			text-decoration: none
-		}
-
-		.bee-divider,
-		.bee-image {
-			overflow: auto
-		}
-
-		.bee-divider .center,
-		.bee-image .bee-center {
-			margin: 0 auto
-		}
-
-		.bee-image .bee-right {
-			float: right
-		}
-
-		.bee-row-10 .bee-col-1 .bee-block-1,
-		.bee-row-12 .bee-col-1 .bee-block-1,
-		.bee-row-12 .bee-col-2 .bee-block-1,
-		.bee-row-2 .bee-col-1 .bee-block-1,
-		.bee-row-3 .bee-col-1 .bee-block-1,
-		.bee-row-8 .bee-col-1 .bee-block-3 {
-			width: 100%
-		}
-
-		.bee-icon {
-			display: inline-block;
-			vertical-align: middle
-		}
-
-		.bee-icon .bee-content {
-			display: flex;
-			align-items: center
-		}
-
-		.bee-image img {
-			display: block;
-			width: 100%
-		}
-
-		.bee-menu .bee-hamburger-controls {
-			cursor: pointer;
-			display: inline-block;
-			position: relative
-		}
-
-		.bee-menu .bee-hamburger-controls span {
-			display: block;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			background-size: 100%;
-			background-repeat: no-repeat;
-			transition: .12s ease-in-out
-		}
-
-		.bee-menu ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0
-		}
-
-		.bee-menu ul.bee-horizontal li {
-			display: inline-block
-		}
-
-		.bee-paragraph {
-			overflow-wrap: anywhere
-		}
-
-		.bee-social .icon img {
-			max-height: 32px
-		}
-
-		.bee-row-1,
-		.bee-row-11,
-		.bee-row-12,
-		.bee-row-2,
-		.bee-row-3,
-		.bee-row-4,
-		.bee-row-8,
-		.bee-row-9 {
-			background-color: #001f20;
-			background-repeat: no-repeat
-		}
-
-		.bee-row-1 .bee-row-content,
-		.bee-row-4 .bee-row-content {
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000
-		}
-
-		.bee-row-1 .bee-col-1,
-		.bee-row-11 .bee-col-1,
-		.bee-row-14 .bee-col-1,
-		.bee-row-4 .bee-col-1 {
-			padding-bottom: 5px;
-			padding-top: 5px
-		}
-
-		.bee-row-2 .bee-row-content,
-		.bee-row-3 .bee-row-content {
-			background-color: #001f20;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000
-		}
-
-		.bee-row-2 .bee-col-1,
-		.bee-row-3 .bee-col-1,
-		.bee-row-9 .bee-col-1 {
-			display: flex;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-2 .bee-col-2,
-		.bee-row-2 .bee-col-3,
-		.bee-row-3 .bee-col-2,
-		.bee-row-9 .bee-col-3 {
-			padding-bottom: 5px;
-			padding-top: 5px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-2 .bee-col-2 .bee-block-1,
-		.bee-row-3 .bee-col-2 .bee-block-1 {
-			color: #ffffff;
-			font-family: Inter, Helvetica;
-			font-size: 16px;
-			font-weight: 300;
-			text-align: center
-		}
-
-		.bee-row-2 .bee-col-3 .bee-block-1 {
-			padding: 10px;
-			text-align: right
-		}
-
-		.bee-row-5 {
-			background-color: #001f20;
-			background-image: url('images/2_Banner-BG_LP-2.gif');
-			background-repeat: no-repeat;
-			background-size: cover
-		}
-
-		.bee-row-5 .bee-row-content,
-		.bee-row-6 {
-			background-size: auto;
-			background-repeat: no-repeat
-		}
-
-		.bee-row-5 .bee-row-content {
-			border-radius: 0;
-			color: #000000
-		}
-
-		.bee-row-6 {
-			background-color: #001f20
-		}
-
-		.bee-row-10 .bee-row-content,
-		.bee-row-6 .bee-row-content {
-			background-repeat: no-repeat;
-			background-size: auto;
-			border-radius: 0;
-			color: #000000;
-			padding: 60px
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-2 {
-			padding: 20px 10px 10px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-3 {
-			padding: 8px 10px 22px
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-4 {
-			padding: 10px;
-			text-align: center
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-7 {
-			padding-bottom: 20px;
-			width: 100%
-		}
-
-		.bee-row-7 {
-			background-color: #001f20;
-			background-image: url('images/3_Abstract_BG_1.png');
-			background-repeat: no-repeat;
-			background-size: cover
-		}
-
-		.bee-row-10,
-		.bee-row-7 .bee-row-content {
-			background-size: auto;
-			background-repeat: no-repeat
-		}
-
-		.bee-row-7 .bee-row-content {
-			border-radius: 0;
-			color: #000000;
-			padding: 50px
-		}
-
-		.bee-row-7 .bee-col-1 {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end
-		}
-
-		.bee-row-7 .bee-col-1 .bee-block-1 {
-			padding: 22px 10px 10px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-7 .bee-col-1 .bee-block-2 {
-			padding: 10px 10px 22px
-		}
-
-		.bee-row-7 .bee-col-1 .bee-block-3 {
-			padding: 10px 10px 22px;
-			text-align: center
-		}
-
-		.bee-row-8 .bee-row-content {
-			background-color: #001f20;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000;
-			padding: 60px
-		}
-
-		.bee-row-8 .bee-col-1 .bee-block-1 {
-			padding: 10px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-8 .bee-col-1 .bee-block-4 {
-			padding: 60px 10px 8px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-8 .bee-col-1 .bee-block-5 {
-			padding-bottom: 10px;
-			padding-left: 10px;
-			padding-right: 10px
-		}
-
-		.bee-row-8 .bee-col-1 .bee-block-6 {
-			padding: 14px 10px 2px;
-			text-align: center
-		}
-
-		.bee-row-9 .bee-row-content {
-			background-color: #001f20;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000;
-			padding: 60px 50px
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-1,
-		.bee-row-9 .bee-col-2 .bee-block-1,
-		.bee-row-9 .bee-col-3 .bee-block-1 {
-			padding-left: 10px;
-			padding-right: 10px;
-			width: 100%
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-2,
-		.bee-row-9 .bee-col-2 .bee-block-2,
-		.bee-row-9 .bee-col-3 .bee-block-2 {
-			padding: 32px 10px 8px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-3,
-		.bee-row-9 .bee-col-2 .bee-block-3,
-		.bee-row-9 .bee-col-3 .bee-block-3 {
-			padding-bottom: 10px;
-			padding-left: 10px;
-			padding-right: 60px
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-4,
-		.bee-row-9 .bee-col-2 .bee-block-4,
-		.bee-row-9 .bee-col-3 .bee-block-4 {
-			padding: 14px 10px 2px;
-			text-align: left
-		}
-
-		.bee-row-9 .bee-col-2 {
-			padding-left: 5px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-10 .bee-col-1,
-		.bee-row-10 .bee-col-2 {
-			flex-direction: column;
-			border-radius: 0;
-			display: flex
-		}
-
-		.bee-row-10 {
-			background-color: #001f20;
-			background-image: url('images/4_pawel-czerwinski-TLzxYiyXw1o-unsplash.jpg')
-		}
-
-		.bee-row-10 .bee-col-1 {
-			justify-content: center
-		}
-
-		.bee-row-10 .bee-col-2 {
-			padding-left: 10px;
-			padding-right: 60px;
-			justify-content: center
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-1,
-		.bee-row-11 .bee-col-1 .bee-block-1 {
-			padding: 10px
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-2 {
-			padding: 6px 60px 6px 10px
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-3 {
-			padding: 10px 40px 10px 10px
-		}
-
-		.bee-row-11 .bee-row-content {
-			background-color: #001f20;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000;
-			padding-top: 60px
-		}
-
-		.bee-row-11 .bee-col-1 .bee-block-2,
-		.bee-row-13 .bee-col-4 .bee-block-1 {
-			padding-left: 10px;
-			padding-right: 10px;
-			padding-top: 12px;
-			text-align: center;
-			width: 100%
-		}
-
-		.bee-row-11 .bee-col-1 .bee-block-3,
-		.bee-row-13 .bee-col-4 .bee-block-2 {
-			padding: 8px 10px 10px
-		}
-
-		.bee-row-12 .bee-row-content {
-			background-color: #001f20;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000;
-			padding-bottom: 60px;
-			padding-top: 22px
-		}
-
-		.bee-row-12 .bee-col-1 {
-			padding-right: 16px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-12 .bee-col-2 {
-			padding-left: 16px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center
-		}
-
-		.bee-row-13 {
-			background-color: #004e52;
-			background-repeat: no-repeat
-		}
-
-		.bee-row-13 .bee-row-content {
-			background-color: #004e52;
-			background-repeat: no-repeat;
-			border-radius: 0;
-			color: #000000;
-			padding-bottom: 60px;
-			padding-left: 60px;
-			padding-right: 60px
-		}
-
-		.bee-row-14,
-		.bee-row-14 .bee-row-content {
-			background-color: #ffffff;
-			background-repeat: no-repeat
-		}
-
-		.bee-row-13 .bee-col-1,
-		.bee-row-13 .bee-col-2,
-		.bee-row-13 .bee-col-3,
-		.bee-row-13 .bee-col-4 {
-			padding-bottom: 5px;
-			padding-top: 5px;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end
-		}
-
-		.bee-row-13 .bee-col-1 .bee-block-1 {
-			padding-bottom: 22px;
-			padding-top: 60px;
-			width: 100%
-		}
-
-		.bee-row-13 .bee-col-1 .bee-block-2 {
-			padding-right: 10px;
-			padding-top: 8px
-		}
-
-		.bee-row-13 .bee-col-2 .bee-block-1,
-		.bee-row-13 .bee-col-3 .bee-block-1 {
-			color: #ffffff;
-			font-family: Inter, Helvetica;
-			font-size: 14px;
-			font-weight: 400;
-			text-align: left
-		}
-
-		.bee-row-13 .bee-col-4 .bee-block-3 {
-			padding-left: 10px;
-			padding-top: 10px;
-			text-align: right
-		}
-
-		.bee-row-14 .bee-row-content {
-			color: #000000
-		}
-
-		.bee-row-14 .bee-col-1 .bee-block-1 {
-			color: #1e0e4b;
-			font-family: Inter, sans-serif;
-			font-size: 15px;
-			padding-bottom: 5px;
-			padding-top: 5px;
-			text-align: center
-		}
-
-		.bee-row-2 .bee-col-3 .bee-block-1 a,
-		.bee-row-6 .bee-col-1 .bee-block-4 a,
-		.bee-row-7 .bee-col-1 .bee-block-3 a,
-		.bee-row-8 .bee-col-1 .bee-block-6 a,
-		.bee-row-9 .bee-col-1 .bee-block-4 a,
-		.bee-row-9 .bee-col-2 .bee-block-4 a,
-		.bee-row-9 .bee-col-3 .bee-block-4 a {
-			background-color: #ccf4c2;
-			border-radius: 36px;
-			color: #004e52;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 16px;
-			font-weight: 400;
-			letter-spacing: -1px;
-			line-height: 200%;
-			padding: 5px 24px;
-			width: auto
-		}
-
-		.bee-row-2 .bee-col-2 .bee-block-1 li,
-		.bee-row-3 .bee-col-2 .bee-block-1 li {
-			padding: 15px
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-2 a,
-		.bee-row-13 .bee-col-2 .bee-block-1 li a,
-		.bee-row-13 .bee-col-3 .bee-block-1 li a,
-		.bee-row-2 .bee-col-2 .bee-block-1 li a,
-		.bee-row-3 .bee-col-2 .bee-block-1 li a {
-			color: #ffffff
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-2 h1,
-		.bee-row-7 .bee-col-1 .bee-block-1 h1 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 64px;
-			font-weight: 400;
-			letter-spacing: -2px;
-			line-height: 120%;
-			text-align: center
-		}
-
-		.bee-row-6 .bee-col-1 .bee-block-3,
-		.bee-row-8 .bee-col-1 .bee-block-5 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 16px;
-			font-weight: 300;
-			letter-spacing: -1px;
-			line-height: 150%;
-			text-align: center
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-2 p:not(:last-child),
-		.bee-row-11 .bee-col-1 .bee-block-3 p:not(:last-child),
-		.bee-row-13 .bee-col-1 .bee-block-2 p:not(:last-child),
-		.bee-row-13 .bee-col-4 .bee-block-2 p:not(:last-child),
-		.bee-row-6 .bee-col-1 .bee-block-3 p:not(:last-child),
-		.bee-row-7 .bee-col-1 .bee-block-2 p:not(:last-child) {
-			margin-bottom: 16px
-		}
-
-		.bee-row-8 .bee-col-1 .bee-block-1 h2,
-		.bee-row-8 .bee-col-1 .bee-block-4 h2 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 24px;
-			font-weight: 500;
-			letter-spacing: -1px;
-			line-height: 120%;
-			text-align: center
-		}
-
-		.bee-row-11 .bee-col-1 .bee-block-3,
-		.bee-row-7 .bee-col-1 .bee-block-2 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 16px;
-			font-weight: 300;
-			letter-spacing: -1px;
-			line-height: 120%;
-			text-align: center
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-3 p:not(:last-child),
-		.bee-row-8 .bee-col-1 .bee-block-5 p:not(:last-child),
-		.bee-row-9 .bee-col-1 .bee-block-3 p:not(:last-child),
-		.bee-row-9 .bee-col-2 .bee-block-3 p:not(:last-child),
-		.bee-row-9 .bee-col-3 .bee-block-3 p:not(:last-child) {
-			margin-bottom: 20px
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-3,
-		.bee-row-9 .bee-col-2 .bee-block-3,
-		.bee-row-9 .bee-col-3 .bee-block-3 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 16px;
-			font-weight: 300;
-			letter-spacing: -1px;
-			line-height: 150%;
-			text-align: left
-		}
-
-		.bee-row-9 .bee-col-1 .bee-block-2 h2,
-		.bee-row-9 .bee-col-2 .bee-block-2 h2,
-		.bee-row-9 .bee-col-3 .bee-block-2 h2 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 24px;
-			font-weight: 500;
-			letter-spacing: -1px;
-			line-height: 120%;
-			text-align: left
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-1 {
-			color: #ccf4c2;
-			direction: ltr;
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			font-size: 14px;
-			font-weight: 400;
-			letter-spacing: 1px;
-			line-height: 120%;
-			text-align: left
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-2,
-		.bee-row-10 .bee-col-2 .bee-block-3,
-		.bee-row-11 .bee-col-1 .bee-block-2 h2 {
-			letter-spacing: -1px;
-			direction: ltr;
-			font-family: Inter, Helvetica
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-1 p:not(:last-child) {
-			margin-bottom: 14px
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-2 {
-			color: #ffffff;
-			font-size: 20px;
-			font-weight: 300;
-			line-height: 120%;
-			text-align: left
-		}
-
-		.bee-row-10 .bee-col-2 .bee-block-3 {
-			color: #ccf4c2;
-			font-size: 16px;
-			font-weight: 300;
-			line-height: 150%;
-			text-align: left
-		}
-
-		.bee-row-11 .bee-col-1 .bee-block-2 h2 {
-			color: #ccf4c2;
-			font-size: 24px;
-			font-weight: 500;
-			line-height: 120%;
-			text-align: center
-		}
-
-		.bee-row-13 .bee-col-1 .bee-block-2 {
-			color: #ffffff;
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			font-size: 12px;
-			font-weight: 300;
-			letter-spacing: 0;
-			line-height: 200%;
-			text-align: left
-		}
-
-		.bee-row-13 .bee-col-4 .bee-block-1 h2,
-		.bee-row-13 .bee-col-4 .bee-block-2 {
-			direction: ltr;
-			font-family: Inter, Helvetica;
-			letter-spacing: -1px;
-			line-height: 120%
-		}
-
-		.bee-row-13 .bee-col-2 .bee-block-1 li,
-		.bee-row-13 .bee-col-3 .bee-block-1 li {
-			padding: 5px
-		}
-
-		.bee-row-13 .bee-col-4 .bee-block-1 h2 {
-			color: #ccf4c2;
-			font-size: 24px;
-			font-weight: 500;
-			text-align: right
-		}
-
-		.bee-row-13 .bee-col-4 .bee-block-2 {
-			color: #ffffff;
-			font-size: 16px;
-			font-weight: 300;
-			text-align: right
-		}
-
-		@media (max-width:768px) {
-			.bee-desktop_hide {
-				display: block !important
-			}
-
-			.bee-menu ul.with-bee-hamburger {
-				display: none;
-				padding: 5px 0;
-				position: relative;
-				top: -4px
-			}
-
-			.bee-menu ul.with-bee-hamburger li {
-				display: block;
-				text-align: center
-			}
-
-			.bee-menu ul.with-bee-hamburger li a {
-				text-decoration: none
-			}
-
-			.bee-menu ul.with-bee-hamburger span,
-			.bee-mobile_hide {
-				display: none
-			}
-
-			#bee-hamburger-menu-r1c1m0:checked~ul,
-			#bee-hamburger-menu-r2c1m0:checked~ul,
-			.bee-row-content:not(.no_stack) {
-				display: block
-			}
-
-			.bee-row-10 .bee-col-2,
-			.bee-row-11 .bee-col-1,
-			.bee-row-12 .bee-col-1,
-			.bee-row-12 .bee-col-2,
-			.bee-row-12 .bee-col-2 .bee-block-1,
-			.bee-row-2 .bee-col-2,
-			.bee-row-3 .bee-col-2,
-			.bee-row-6 .bee-col-1 {
-				padding: 0 !important
-			}
-
-			.bee-row-3 .bee-row-content {
-				padding: 5px 16px !important
-			}
-
-			.bee-row-6 .bee-row-content,
-			.bee-row-7 .bee-row-content,
-			.bee-row-8 .bee-row-content,
-			.bee-row-9 .bee-row-content {
-				padding: 16px !important
-			}
-
-			.bee-row-10 .bee-row-content {
-				padding: 22px !important
-			}
-
-			.bee-row-10 .bee-col-1,
-			.bee-row-2 .bee-col-1 .bee-block-1,
-			.bee-row-3 .bee-col-1 .bee-block-1,
-			.bee-row-9 .bee-col-1 .bee-block-1,
-			.bee-row-9 .bee-col-2 .bee-block-1,
-			.bee-row-9 .bee-col-3 .bee-block-1 {
-				padding: 10px !important
-			}
-
-			.bee-row-11 .bee-row-content {
-				padding: 0 16px !important
-			}
-
-			.bee-row-12 .bee-row-content {
-				padding: 16px 16px 32px !important
-			}
-
-			.bee-row-13 .bee-row-content {
-				padding: 0 22px 22px !important
-			}
-
-			.bee-row-9 .bee-col-1,
-			.bee-row-9 .bee-col-2 {
-				margin-bottom: 24px !important
-			}
-
-			.bee-row-10 .bee-col-1 {
-				margin-bottom: 60px !important
-			}
-
-			.bee-row-1 .bee-col-1 .bee-block-1,
-			.bee-row-4 .bee-col-1 .bee-block-1,
-			.bee-row-6 .bee-col-1 .bee-block-1,
-			.bee-row-6 .bee-col-1 .bee-block-5,
-			.bee-row-6 .bee-col-1 .bee-block-8 {
-				height: 16px !important
-			}
-
-			.bee-row-12 .bee-col-1 .bee-block-1 img,
-			.bee-row-12 .bee-col-2 .bee-block-1 img,
-			.bee-row-13 .bee-col-1 .bee-block-1 img,
-			.bee-row-2 .bee-col-1 .bee-block-1 img,
-			.bee-row-3 .bee-col-1 .bee-block-1 img,
-			.bee-row-6 .bee-col-1 .bee-block-7 img,
-			.bee-row-8 .bee-col-1 .bee-block-3 img,
-			.bee-row-9 .bee-col-1 .bee-block-1 img,
-			.bee-row-9 .bee-col-2 .bee-block-1 img,
-			.bee-row-9 .bee-col-3 .bee-block-1 img {
-				float: none !important;
-				margin: 0 auto !important
-			}
-
-			.bee-row-2 .bee-col-2 .bee-block-1 .bee-hamburger-controls,
-			.bee-row-3 .bee-col-2 .bee-block-1 .bee-hamburger-controls {
-				width: 36px;
-				height: 36px;
-				background-color: transparent;
-				border-radius: 0
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 .bee-hamburger-controls span,
-			.bee-row-13 .bee-col-3 .bee-block-1 .bee-hamburger-controls span,
-			.bee-row-2 .bee-col-2 .bee-block-1 .bee-hamburger-controls span,
-			.bee-row-3 .bee-col-2 .bee-block-1 .bee-hamburger-controls span {
-				width: 18px;
-				height: 18px
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-open,
-			.bee-row-13 .bee-col-3 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-open,
-			.bee-row-2 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-open,
-			.bee-row-3 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-open {
-				background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB3aWR0aD0iNjQiLz48cmVjdCBoZWlnaHQ9IjEyIiByeD0iNiIgd2lkdGg9IjY0IiB5PSI1MiIvPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB3aWR0aD0iNjQiIHk9IjI2Ii8+PC9nPjwvc3ZnPg==");
-				transform: translate(-50%, -50%) scaleY(1)
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-close,
-			.bee-row-13 .bee-col-3 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-close,
-			.bee-row-2 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-close,
-			.bee-row-3 .bee-col-2 .bee-block-1 .bee-hamburger-controls span.bee-hamburger-close {
-				background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgNjQgNjQiIHdpZHRoPSI2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxyZWN0IGhlaWdodD0iMTIiIHJ4PSI2IiB0cmFuc2Zvcm09Im1hdHJpeCgtLjcwNzEwNjc4IC0uNzA3MTA2NzggLjcwNzEwNjc4IC0uNzA3MTA2NzggMzEuOTkxMzc4IDc3LjIzNDAxOSkiIHdpZHRoPSI4MiIgeD0iLTkuMDA4NjIyIiB5PSIyNS45OTEzNzgiLz48cmVjdCBoZWlnaHQ9IjEyIiByeD0iNiIgdHJhbnNmb3JtPSJtYXRyaXgoLS43MDcxMDY3OCAuNzA3MTA2NzggLS43MDcxMDY3OCAtLjcwNzEwNjc4IDc3LjgxOTgwNiAzMi4yMzQwMTkpIiB3aWR0aD0iODIiIHg9Ii04Ljc2NTk4MSIgeT0iMjYuMjM0MDE5Ii8+PC9nPjwvc3ZnPg==");
-				transform: translate(-50%, -50%) scaleY(0)
-			}
-
-			.bee-row-2 .bee-col-2 .bee-block-1 ul.with-bee-hamburger,
-			.bee-row-3 .bee-col-2 .bee-block-1 ul.with-bee-hamburger {
-				background-color: transparent
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li,
-			.bee-row-13 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li a,
-			.bee-row-13 .bee-col-3 .bee-block-1 ul.with-bee-hamburger li,
-			.bee-row-13 .bee-col-3 .bee-block-1 ul.with-bee-hamburger li a,
-			.bee-row-2 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li,
-			.bee-row-2 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li a,
-			.bee-row-3 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li,
-			.bee-row-3 .bee-col-2 .bee-block-1 ul.with-bee-hamburger li a {
-				color: #ffffff
-			}
-
-			#bee-hamburger-menu-r1c1m0:checked~.bee-hamburger-controls .bee-hamburger-open,
-			#bee-hamburger-menu-r2c1m0:checked~.bee-hamburger-controls .bee-hamburger-open {
-				transform: translate(-50%, -50%) scaleY(0)
-			}
-
-			#bee-hamburger-menu-r1c1m0:checked~.bee-hamburger-controls .bee-hamburger-close,
-			#bee-hamburger-menu-r2c1m0:checked~.bee-hamburger-controls .bee-hamburger-close {
-				transform: translate(-50%, -50%) scaleY(1)
-			}
-
-			.bee-row-6 .bee-col-1 .bee-block-2 {
-				padding: 10px
-			}
-
-			.bee-row-6 .bee-col-1 .bee-block-2 h1 {
-				font-size: 36px
-			}
-
-			.bee-row-6 .bee-col-1 .bee-block-3 {
-				padding: 6px 10px 8px !important
-			}
-
-			.bee-row-6 .bee-col-1 .bee-block-6 {
-				height: 32px !important
-			}
-
-			.bee-row-6 .bee-col-1 .bee-block-7 {
-				padding: 14px 10px 18px !important
-			}
-
-			.bee-row-3 .bee-col-2 .bee-block-1 {
-				text-align: right !important
-			}
-
-			.bee-row-11 .bee-col-1 .bee-block-2 h2,
-			.bee-row-7 .bee-col-1 .bee-block-1 {
-				text-align: center
-			}
-
-			.bee-row-7 .bee-col-1 .bee-block-1 h1 {
-				font-size: 36px;
-				text-align: center
-			}
-
-			.bee-row-11 .bee-col-1 .bee-block-3,
-			.bee-row-7 .bee-col-1 .bee-block-3,
-			.bee-row-7 .bee-col-1 .bee-block-3 .bee-button-content,
-			.bee-row-8 .bee-col-1 .bee-block-6 .bee-button-content,
-			.bee-row-9 .bee-col-1 .bee-block-4 .bee-button-content,
-			.bee-row-9 .bee-col-2 .bee-block-4 .bee-button-content,
-			.bee-row-9 .bee-col-3 .bee-block-4 .bee-button-content {
-				text-align: center !important
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-1 {
-				padding: 10px;
-				text-align: left
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-1 h2 {
-				font-size: 20px;
-				text-align: left
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-2 {
-				height: 4px !important
-			}
-
-			.bee-row-7 .bee-col-1 .bee-block-2 {
-				padding: 6px 32px 8px !important;
-				text-align: center !important
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-3 {
-				padding: 0 10px !important
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-4 {
-				padding: 24px 10px 8px;
-				text-align: left
-			}
-
-			.bee-row-13 .bee-col-4 .bee-block-1 h2,
-			.bee-row-8 .bee-col-1 .bee-block-4 h2 {
-				text-align: left
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-5 {
-				padding: 0 10px 10px !important;
-				text-align: left !important
-			}
-
-			.bee-row-8 .bee-col-1 .bee-block-6 {
-				padding: 6px 10px 10px !important;
-				text-align: left !important
-			}
-
-			.bee-row-9 .bee-col-1 .bee-block-3,
-			.bee-row-9 .bee-col-2 .bee-block-3,
-			.bee-row-9 .bee-col-3 .bee-block-3 {
-				padding: 0 10px 10px !important
-			}
-
-			.bee-row-9 .bee-col-1 .bee-block-4 {
-				padding: 6px 10px 32px !important
-			}
-
-			.bee-row-9 .bee-col-1 .bee-block-2,
-			.bee-row-9 .bee-col-2 .bee-block-2,
-			.bee-row-9 .bee-col-3 .bee-block-2 {
-				padding: 6px 10px 8px
-			}
-
-			.bee-row-9 .bee-col-2 .bee-block-4,
-			.bee-row-9 .bee-col-3 .bee-block-4 {
-				padding: 6px 10px 10px !important
-			}
-
-			.bee-row-10 .bee-col-1 .bee-block-1 img {
-				float: left !important;
-				margin: auto !important
-			}
-
-			.bee-row-11 .bee-col-1 .bee-block-2 {
-				padding: 16px 10px 0;
-				text-align: center
-			}
-
-			.bee-row-13 .bee-col-1 .bee-block-1 {
-				padding: 32px 0 22px !important
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 .bee-hamburger-controls,
-			.bee-row-13 .bee-col-3 .bee-block-1 .bee-hamburger-controls {
-				width: 36px;
-				height: 36px;
-				background-color: #000000;
-				border-radius: 0
-			}
-
-			.bee-row-13 .bee-col-2 .bee-block-1 ul.with-bee-hamburger,
-			.bee-row-13 .bee-col-3 .bee-block-1 ul.with-bee-hamburger {
-				background-color: #000000
-			}
-
-			.bee-row-13 .bee-col-4 .bee-block-1 {
-				padding: 16px 10px 0 0;
-				text-align: left
-			}
-
-			.bee-row-13 .bee-col-4 .bee-block-3 {
-				padding: 10px 0 0 !important;
-				text-align: left !important
-			}
-
-			.bee-row-13 .bee-col-4 .bee-block-2 {
-				padding: 8px 10px 10px 0 !important;
-				text-align: left !important;
-				font-size: 12px !important
-			}
-		}
-
-		.bee-row-14 .bee-col-1 .bee-block-1 .bee-icon-image {
-			padding: 5px 6px 5px 5px
-		}
-
-		.bee-row-14 .bee-col-1 .bee-block-1 .bee-icon:not(.bee-icon-first) .bee-content {
-			margin-left: 0
-		}
-
-		.bee-row-14 .bee-col-1 .bee-block-1 .bee-icon::not(.bee-icon-last) .bee-content {
-			margin-right: 0
-		}
-
-		.bee-row-14 .bee-col-1 .bee-block-1 .bee-icon-label a {
-			color: #1e0e4b
-		}
-	</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevMem - AI Powered Codebase Memory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface-alt: #0d0d0d;
+      --border: #1e1e1e;
+      --border-strong: #333333;
+      --text-primary: #ffffff;
+      --text-secondary: #888888;
+      --text-muted: #444444;
+      --accent: #7c6cfc;
+      --success: #28c840;
+      --amber: #febc2e;
+      --radius-card: 8px;
+      --radius-sm: 6px;
+      --radius-btn: 4px;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 32px;
+      --space-5: 40px;
+      --space-6: 48px;
+      --space-8: 64px;
+      --space-10: 80px;
+      --space-12: 96px;
+      --space-15: 120px;
+      --max: 960px;
+      --max-narrow: 800px;
+      --mono: "SF Mono", "Fira Code", "Menlo", "Monaco", "Consolas", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: Inter, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--space-3);
+    }
+
+    .container-narrow {
+      width: 100%;
+      max-width: var(--max-narrow);
+      margin: 0 auto;
+      padding: 0 var(--space-3);
+    }
+
+    .section-label {
+      font-size: 11px;
+      line-height: 1.4;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      color: var(--accent);
+      margin: 0 0 var(--space-2);
+    }
+
+    .section-heading {
+      margin: 0 0 var(--space-4);
+      font-family: "Instrument Serif", serif;
+      font-size: clamp(36px, 5vw, 52px);
+      line-height: 1.2;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .text-body {
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.8;
+      margin: 0 0 var(--space-3);
+      max-width: 640px;
+    }
+
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 56px;
+      z-index: 100;
+      border-bottom: 1px solid #1a1a1a;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 var(--space-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .nav-links a {
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-install {
+      border: 1px solid #2a2a2a;
+      padding: 6px 14px;
+      border-radius: var(--radius-btn);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-install:hover {
+      background: #1a1a1a;
+      color: var(--text-primary);
+    }
+
+    main {
+      padding-top: 56px;
+    }
+
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-10) var(--space-3) var(--space-8);
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      mix-blend-mode: screen;
+      opacity: 0.2;
+    }
+
+    .hero-content {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid #2a2a2a;
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #666666;
+      margin-bottom: var(--space-4);
+    }
+
+    .hero-badge .accent {
+      color: var(--accent);
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: "Instrument Serif", serif;
+      font-style: italic;
+      font-size: clamp(72px, 10vw, 120px);
+      line-height: 0.95;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    .hero-subtitle {
+      margin: var(--space-2) 0 0;
+      font-family: "Instrument Serif", serif;
+      font-style: normal;
+      font-size: clamp(18px, 2.5vw, 26px);
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .hero-copy {
+      margin: var(--space-4) auto 0;
+      max-width: 540px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #666666;
+    }
+
+    .cta-row {
+      margin-top: var(--space-5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      border-radius: var(--radius-btn);
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 24px;
+      border: none;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #0a0a0a;
+      font-weight: 500;
+    }
+
+    .btn-primary:hover {
+      background: #e8e8e8;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: var(--text-secondary);
+      font-weight: 400;
+      font-family: var(--mono);
+    }
+
+    .btn-secondary:hover {
+      border-color: #444444;
+      color: #cccccc;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: var(--space-3);
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.3;
+      color: var(--text-secondary);
+      animation: bounce 2s ease-in-out infinite alternate;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    @keyframes bounce {
+      from { transform: translateX(-50%) translateY(0); }
+      to { transform: translateX(-50%) translateY(6px); }
+    }
+
+    #problem,
+    #solution,
+    #how,
+    #terminal,
+    #outputs,
+    #value,
+    #install {
+      padding: var(--space-15) 0;
+    }
+
+    #solution,
+    #value {
+      background: var(--surface-alt);
+    }
+
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--accent);
+      padding-left: var(--space-3);
+      font-family: "Instrument Serif", serif;
+      font-style: italic;
+      font-size: 24px;
+      line-height: 1.5;
+      color: #cccccc;
+      margin: 0;
+    }
+
+    .solution-copy {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+    }
+
+    .step-number {
+      margin: 0 0 var(--space-2);
+      font-size: 12px;
+      color: #333333;
+      font-weight: 300;
+    }
+
+    .code-badge {
+      display: inline-block;
+      border: 1px solid #2a2a2a;
+      border-radius: var(--radius-sm);
+      background: #0f0f0f;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 4px 10px;
+      margin-bottom: var(--space-2);
+    }
+
+    .step-title {
+      margin: 0 0 var(--space-2);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .step-body {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #666666;
+    }
+
+    .terminal-shell {
+      max-width: 720px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .terminal-titlebar {
+      height: 40px;
+      background: #161616;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-2);
+      gap: var(--space-1);
+      position: relative;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .terminal-name {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .terminal-body {
+      margin: 0;
+      padding: var(--space-3);
+      white-space: pre;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    .outputs-grid {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    .output-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--space-3);
+    }
+
+    .output-title {
+      margin: 0 0 var(--space-2);
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .output-copy {
+      margin: 0 0 var(--space-2);
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .output-image {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: block;
+      background: #0f0f0f;
+    }
+
+    .query-shell {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #0d0f11;
+    }
+
+    .query-titlebar {
+      height: 36px;
+      background: #161616;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-2);
+      gap: 6px;
+      position: relative;
+    }
+
+    .query-name {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .query-body {
+      margin: 0;
+      padding: var(--space-2);
+      white-space: pre-wrap;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .prompt { color: var(--accent); }
+    .cmd { color: var(--text-primary); }
+    .ok { color: var(--success); }
+    .mod { color: var(--accent); }
+    .meta { color: var(--text-muted); }
+    .num { color: var(--amber); }
+
+    .value-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    .value-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px;
+      transition: border-color 0.2s ease;
+    }
+
+    .value-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .value-title {
+      margin: 0 0 var(--space-2);
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .value-body {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #666666;
+    }
+
+    #install .section-heading {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: var(--space-6);
+    }
+
+    .install-steps {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .install-step {
+      margin-bottom: var(--space-3);
+    }
+
+    .install-label {
+      display: block;
+      margin-bottom: var(--space-1);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .install-code {
+      margin: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: #cccccc;
+      font-size: 13px;
+      font-family: var(--mono);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .install-note {
+      text-align: center;
+      margin: var(--space-4) 0 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 48px 24px;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .footer-brand {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: var(--space-1);
+    }
+
+    .footer-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: var(--space-1);
+    }
+
+    .footer-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: var(--radius-btn);
+    }
+
+    .footer-copy {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer-signoff {
+      margin: var(--space-1) 0 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .footer-linkedin {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 13px;
+      transition: color 0.15s ease;
+    }
+
+    .footer-linkedin:hover {
+      color: var(--text-secondary);
+    }
+
+    .footer-love {
+      max-width: 960px;
+      margin: var(--space-2) auto 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-3);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links a {
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 1023px) {
+      .quote-grid,
+      .step-grid,
+      .value-grid,
+      .outputs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        max-width: 760px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+
+      #problem,
+      #solution,
+      #how,
+      #terminal,
+      #outputs,
+      #value,
+      #install {
+        padding: var(--space-10) 0;
+      }
+
+      .container,
+      .container-narrow,
+      .nav-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .cta-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .terminal-body {
+        font-size: 11px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
-
 <body>
-	<div class="bee-page-container">
-		<div class="bee-row bee-row-1 bee-mobile_hide">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-spacer">
-						<div class="spacer" style="height:16px;"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-2 bee-mobile_hide">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w3">
-					<div class="bee-block bee-block-1 bee-image"><a href="https://www.example.com/" target="_blank"><img alt="Placeholder Logo" class="bee-autowidth" src="images/5_Pulse_Logo.png" style="max-width:107px;" title="Placeholder Logo" /></a></div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w6">
-					<div class="bee-block bee-block-1 bee-menu">
-						<nav class="bee-menu"><input class="bee-hamburger-trigger" id="bee-hamburger-menu-r1c1m0" type="checkbox" /><label class="bee-hamburger-controls" for="bee-hamburger-menu-r1c1m0"><span class="bee-hamburger-open"></span><span class="bee-hamburger-close"></span></label>
-							<ul class="bee-horizontal with-bee-hamburger">
-								<li><a href="https://www.example.com/" target="_self" title="">Platform</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Solutions</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Pricing</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Resources</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Sign In</a></li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-				<div class="bee-col bee-col-3 bee-col-w3">
-					<div class="bee-block bee-block-1 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Open Account</span></a></div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-3 bee-desktop_hide">
-			<div class="bee-row-content no_stack">
-				<div class="bee-col bee-col-1 bee-col-w4">
-					<div class="bee-block bee-block-1 bee-image"><a href="https://www.example.com/" target="_blank"><img alt="Placeholder Logo" class="bee-autowidth" src="images/5_Pulse_Logo.png" style="max-width:107px;" title="Placeholder Logo" /></a></div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w8">
-					<div class="bee-block bee-block-1 bee-menu">
-						<nav class="bee-menu"><input class="bee-hamburger-trigger" id="bee-hamburger-menu-r2c1m0" type="checkbox" /><label class="bee-hamburger-controls" for="bee-hamburger-menu-r2c1m0"><span class="bee-hamburger-open"></span><span class="bee-hamburger-close"></span></label>
-							<ul class="bee-horizontal with-bee-hamburger">
-								<li><a href="https://www.example.com/" target="_self" title="">Platform</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Solutions</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Pricing</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Resources</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Sign In</a></li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-4 bee-mobile_hide">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-spacer">
-						<div class="spacer" style="height:16px;"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-5">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-spacer">
-						<div class="spacer" style="height:40px;"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-6">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-spacer">
-						<div class="spacer" style="height:24px;"></div>
-					</div>
-					<div class="bee-block bee-block-2 bee-heading">
-						<h1><span class="tinyMce-placeholder">All systems <span style="color: #ccf4c2;">go.</span></span> </h1>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>Pulse gives your team real-time visibility into performance, messages, and goals.<br />So you can make smarter decisions with confidence.</p>
-					</div>
-					<div class="bee-block bee-block-4 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Book a Demo</span></a></div>
-					<div class="bee-block bee-block-5 bee-spacer bee-desktop_hide">
-						<div class="spacer" style="height:32px;"></div>
-					</div>
-					<div class="bee-block bee-block-6 bee-spacer bee-mobile_hide">
-						<div class="spacer" style="height:46px;"></div>
-					</div>
-					<div class="bee-block bee-block-7 bee-image"><img alt="mockup of a dashboard UI" class="bee-center bee-autowidth" src="images/6_DashboardUi2.png" style="max-width:1180px;" title="mockup of a dashboard UI" /></div>
-					<div class="bee-block bee-block-8 bee-spacer">
-						<div class="spacer" style="height:60px;"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-7">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-heading">
-						<h1><span class="tinyMce-placeholder">Black Friday <span style="color: #ccf4c2;">Offer</span></span> </h1>
-					</div>
-					<div class="bee-block bee-block-2 bee-paragraph">
-						<p>30% off your first 3 months — ends Nov 30.</p>
-					</div>
-					<div class="bee-block bee-block-3 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Shop Black Friday</span></a></div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-8">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-heading">
-						<h2><span class="tinyMce-placeholder">What’s New in Pulse 4.1</span> </h2>
-					</div>
-					<div class="bee-block bee-block-2 bee-spacer">
-						<div class="spacer" style="height:26px;"></div>
-					</div>
-					<div class="bee-block bee-block-3 bee-image"><img alt="a screenshot of a computer screen" class="bee-center bee-autowidth" src="images/7_SmartSegments_Resized.jpg" style="max-width:1180px;border-radius:20px;" title="a screenshot of a computer screen" /></div>
-					<div class="bee-block bee-block-4 bee-heading">
-						<h2><span class="tinyMce-placeholder">Smart Segments</span> </h2>
-					</div>
-					<div class="bee-block bee-block-5 bee-paragraph">
-						<p>Organize your data effortlessly with AI-powered segmenting.<br />Pulse now groups users, regions, and behaviors automatically. No manual setup required.</p>
-					</div>
-					<div class="bee-block bee-block-6 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Explore Segments</span></a></div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-9">
-			<div class="bee-row-content" style="gap:24px;">
-				<div class="bee-col bee-col-1 bee-col-w4">
-					<div class="bee-block bee-block-1 bee-image"><img alt="a minimal round graph" class="bee-autowidth" src="images/8_Dashboard.gif" style="max-width:274px;" title="a minimal round graph" /></div>
-					<div class="bee-block bee-block-2 bee-heading">
-						<h2><span class="tinyMce-placeholder">Unified Dashboard</span> </h2>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>All your metrics, flows, and automations in one place.</p>
-					</div>
-					<div class="bee-block bee-block-4 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Let's Get You Set Up</span></a></div>
-					<div class="bee-block bee-block-5 bee-spacer bee-mobile_hide">
-						<div class="spacer" style="height:32px;"></div>
-					</div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w4">
-					<div class="bee-block bee-block-1 bee-image"><img alt="a minimal round graph" class="bee-autowidth" src="images/9_Insights.gif" style="max-width:274px;" title="a minimal round graph" /></div>
-					<div class="bee-block bee-block-2 bee-heading">
-						<h2><span class="tinyMce-placeholder">Real-Time Insights</span> </h2>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>No refresh needed. Track performance live as it happens.</p>
-					</div>
-					<div class="bee-block bee-block-4 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Learn More</span></a></div>
-					<div class="bee-block bee-block-5 bee-spacer bee-mobile_hide">
-						<div class="spacer" style="height:32px;"></div>
-					</div>
-				</div>
-				<div class="bee-col bee-col-3 bee-col-w4">
-					<div class="bee-block bee-block-1 bee-image"><img alt="a screen shot of a dashboard graph card" class="bee-autowidth" src="images/10_Finance.gif" style="max-width:274px;" title="a screen shot of a dashboard graph card" /></div>
-					<div class="bee-block bee-block-2 bee-heading">
-						<h2><span class="tinyMce-placeholder">Finance Tracking Tools</span> </h2>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>Visualize spending patterns, and spot opportunities to save.</p>
-					</div>
-					<div class="bee-block bee-block-4 bee-button"><a class="bee-button-content" href="https://www.example.com/" style="font-size: 16px; display: inline-block;" target="_blank"><span style="word-break: break-word; font-size: 16px; line-height: 200%; letter-spacing: -1px;">Track Smarter</span></a></div>
-					<div class="bee-block bee-block-5 bee-spacer bee-mobile_hide">
-						<div class="spacer" style="height:32px;"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-10 bee-mobile_hide">
-			<div class="bee-row-content" style="gap:60px;">
-				<div class="bee-col bee-col-1 bee-col-w5">
-					<div class="bee-block bee-block-1 bee-image"><img alt="a person with glasses and a watch" class="bee-right bee-autowidth" src="images/11_Headshot.png" style="max-width:210px;" title="a person with glasses and a watch" /></div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w7">
-					<div class="bee-block bee-block-1 bee-paragraph">
-						<p>TESTIMONIAL</p>
-					</div>
-					<div class="bee-block bee-block-2 bee-paragraph">
-						<p>“Pulse turned our chaos into clarity.<br />We finally see everything in one place.”</p>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>Jamie L.<br /><em>Product Lead at Syncly</em></p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-11">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-divider bee-desktop_hide">
-						<div class="center bee-separator" style="border-top:1px solid #ccf4c2;width:100%;"></div>
-					</div>
-					<div class="bee-block bee-block-2 bee-heading">
-						<h2><span class="tinyMce-placeholder">Download the Pulse App.</span> </h2>
-					</div>
-					<div class="bee-block bee-block-3 bee-paragraph">
-						<p>Your analytics command center.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-12">
-			<div class="bee-row-content no_stack">
-				<div class="bee-col bee-col-1 bee-col-w6">
-					<div class="bee-block bee-block-1 bee-image"><a href="https://www.example.com/" target="_blank"><img alt="Download on the App Store" class="bee-right bee-autowidth" src="images/12_AppleAppStore.png" style="max-width:120px;" title="Download on the App Store" /></a></div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w6">
-					<div class="bee-block bee-block-1 bee-image"><a href="https://www.example.com/" target="_blank"><img alt="Get it on Google Play" class="bee-autowidth" src="images/13_GoogleAppStore.png" style="max-width:120px;" title="Get it on Google Play" /></a></div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-13">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w5">
-					<div class="bee-block bee-block-1 bee-image"><a href="https://www.example.com/" target="_blank"><img alt="Placeholder Logo" class="bee-autowidth" src="images/14_PulseLogo2.png" style="max-width:107px;" title="Placeholder Logo" /></a></div>
-					<div class="bee-block bee-block-2 bee-paragraph">
-						<p>© Copyright Pulse Inc. All Rights Reserved.<br />525 University Ave, Palo Alto, CA 94301<br /><a href="https://www.example.com/" rel="noopener" style="text-decoration: underline;" target="_blank"><u>Terms &amp; Conditions</u></a>    <a href="https://www.example.com/" rel="noopener" style="text-decoration: underline;" target="_blank"><u>Privacy Policy</u></a>    <a href="https://www.example.com/" rel="noopener" style="text-decoration: underline;" target="_blank"><u>Manage Preferences</u></a></p>
-					</div>
-				</div>
-				<div class="bee-col bee-col-2 bee-col-w2">
-					<div class="bee-block bee-block-1 bee-menu bee-mobile_hide">
-						<nav class="bee-menu">
-							<ul class="bee-vertical">
-								<li><a href="https://www.example.com/" target="_self" title="">Platform</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Solutions</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Pricing</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Resources</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Sign In</a></li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-				<div class="bee-col bee-col-3 bee-col-w3">
-					<div class="bee-block bee-block-1 bee-menu bee-mobile_hide">
-						<nav class="bee-menu">
-							<ul class="bee-vertical">
-								<li><a href="https://www.example.com/" target="_self" title="">About</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Open Account</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Login</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">iOS</a></li>
-								<li><a href="https://www.example.com/" target="_self" title="">Android</a></li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-				<div class="bee-col bee-col-4 bee-col-w2">
-					<div class="bee-block bee-block-1 bee-heading">
-						<h2><span class="tinyMce-placeholder">Contact Us.</span> </h2>
-					</div>
-					<div class="bee-block bee-block-2 bee-paragraph">
-						<p>contact@pulsehq.com</p>
-					</div>
-					<div class="bee-block bee-block-3 bee-social">
-						<div class="content"><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.facebook.com/" target="_self"><img alt="Facebook" src="images/15_facebook2x.png" title="facebook" /></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.x.com/" target="_self"><img alt="Twitter" src="images/16_twitter2x.png" title="twitter" /></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.linkedin.com/" target="_self"><img alt="Linkedin" src="images/17_linkedin2x.png" title="linkedin" /></a></span><span class="icon" style="padding:0 2.5px 0 2.5px;"><a href="https://www.instagram.com/" target="_self"><img alt="Instagram" src="images/18_instagram2x.png" title="instagram" /></a></span></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="bee-row bee-row-14">
-			<div class="bee-row-content">
-				<div class="bee-col bee-col-1 bee-col-w12">
-					<div class="bee-block bee-block-1 bee-icons">
-						<div>
-							<div class="bee-icon bee-icon-last">
-								<div class="bee-content">
-									<div class="bee-icon-image"><a href="https://designedwithbeefree.com/" target="_blank" title="Designed with Beefree"><img alt="Beefree Logo" height="32px" src="images/19_Beefree-logo.png" width="auto" /></a></div>
-									<div class="bee-icon-label bee-icon-label-right"><a href="https://designedwithbeefree.com/" target="_blank" title="Designed with Beefree">Designed with Beefree</a></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</body>
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#hero">devmem</a>
+      <div class="nav-links" aria-label="Primary navigation">
+        <a href="#how">Docs</a>
+        <a href="https://github.com/Surya-sourav/DevMem" target="_blank">GitHub</a>
+        <a class="nav-install" href="#install">Install</a>
+      </div>
+    </div>
+  </nav>
 
+  <main>
+    <section id="hero" aria-labelledby="hero-title">
+      <img src="./hero-bg.png" alt="" aria-hidden="true" class="hero-bg">
+      <div class="hero-content">
+        <p class="hero-badge"><span class="accent">v0.1.0</span>  ·  Go CLI  ·  AI Powered</p>
+        <h1 id="hero-title" class="hero-title">DevMem</h1>
+        <p class="hero-subtitle">developers memory</p>
+        <p class="hero-copy">Auto codebase documentation. Change capture on every commit.<br>Changelog management tied to git. Because your memory has limits - DevMem doesn't.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#install">Get started →</a>
+          <a class="btn btn-secondary" href="#install">brew install devmem</a>
+        </div>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">↓</div>
+    </section>
+
+    <section id="problem">
+      <div class="container-narrow">
+        <p class="section-label">PROBLEM</p>
+        <h2 class="section-heading">Developers have a context window too.<br>And it's getting smaller.</h2>
+        <p class="text-body">Modern software grows fast. AI-assisted development grows faster. Every pull request, every AI-generated function, every refactor adds layers that no single engineer can hold in their head. The codebase your team wrote six months ago is already a foreign country.</p>
+        <p class="text-body">The rise of AI coding tools makes this worse, not better. AI slop - code generated quickly, merged faster, understood by no one - accumulates silently. Without a system that captures what changed, why it changed, and how it fits into the whole, your codebase becomes archaeology.</p>
+        <p class="text-body">Documentation written once is documentation that lies. The only documentation that stays true is documentation written at the moment of every change - automatically, tied to the commit that caused it.</p>
+      </div>
+    </section>
+
+    <section id="solution">
+      <div class="container-narrow">
+        <p class="section-label">SOLUTION</p>
+        <h2 class="section-heading">One command. Living documentation.<br>Version-controlled, always accurate.</h2>
+      </div>
+      <div class="container">
+        <div class="quote-grid">
+          <blockquote class="pull-quote">"It's like version controlling your documentation throughout your code - one arrow, two solutions."</blockquote>
+          <p class="solution-copy">DevMem watches your git commits and automatically updates your architectural documentation, your module docs, and your changelog - every time. It uses AI to understand what changed and why, then writes it down so your future self (and your team) actually has a chance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="container">
+        <p class="section-label">HOW IT WORKS</p>
+        <h2 class="section-heading">Three commands. Complete memory.</h2>
+        <div class="step-grid">
+          <article class="step-card">
+            <p class="step-number">01</p>
+            <span class="code-badge">devmem init</span>
+            <h3 class="step-title">Crawl &amp; Document</h3>
+            <p class="step-body">DevMem crawls your entire codebase, detects module boundaries, and generates architectural documentation for every module in parallel - using AI to understand structure, not just list files.</p>
+          </article>
+          <article class="step-card">
+            <p class="step-number">02</p>
+            <span class="code-badge">devmem capture</span>
+            <h3 class="step-title">Capture Every Change</h3>
+            <p class="step-body">On every git commit, DevMem reads the diff, identifies which modules changed, and surgically updates their documentation. A changelog entry is written with the commit hash as its ID - permanently linking code history to documentation history.</p>
+          </article>
+          <article class="step-card">
+            <p class="step-number">03</p>
+            <span class="code-badge">devmem query "..."</span>
+            <h3 class="step-title">Ask Your Codebase</h3>
+            <p class="step-body">Ask natural language questions grounded in your living documentation. Which modules depend on the database? How does authentication work? What changed in the last sprint? DevMem answers from context, not hallucination.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="terminal">
+      <div class="container">
+        <div class="terminal-shell" role="img" aria-label="Terminal demo showing devmem init output">
+          <div class="terminal-titlebar">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+            <span class="terminal-name">devmem - zsh</span>
+          </div>
+          <pre class="terminal-body"><span class="prompt">$</span> <span class="cmd">devmem init</span>
+
+  Crawling codebase...           <span class="ok">done</span>  (<span class="num">312</span> files, <span class="num">0.1s</span>)
+  Detecting modules...           found <span class="num">7</span> candidates
+
+  Detected modules:
+    <span class="mod">auth</span>       src/auth/         <span class="meta">(score: 7)</span>
+    <span class="mod">api</span>        src/api/          <span class="meta">(score: 6)</span>
+    <span class="mod">db</span>         internal/db/      <span class="meta">(score: 5)</span>
+    <span class="mod">worker</span>     internal/worker/  <span class="meta">(score: 4)</span>
+    <span class="mod">config</span>     pkg/config/       <span class="meta">(score: 3)</span>
+
+  Confirm? [Y/n]: Y
+
+  Analysing modules (<span class="num">7</span> total, max <span class="num">5</span> parallel)...
+    [<span class="num">1</span>/<span class="num">7</span>] <span class="mod">auth</span>      <span class="ok">✓ done</span>  (<span class="num">1.2s</span>)
+    [<span class="num">3</span>/<span class="num">7</span>] <span class="mod">api</span>       <span class="ok">✓ done</span>  (<span class="num">1.4s</span>)
+    [<span class="num">2</span>/<span class="num">7</span>] <span class="mod">db</span>        <span class="ok">✓ done</span>  (<span class="num">1.8s</span>)
+    [<span class="num">5</span>/<span class="num">7</span>] <span class="mod">config</span>    <span class="ok">✓ done</span>  (<span class="num">0.9s</span>)
+    [<span class="num">4</span>/<span class="num">7</span>] <span class="mod">worker</span>    <span class="ok">✓ done</span>  (<span class="num">2.1s</span>)
+
+  Generating master architecture...  <span class="ok">✓ done</span>  (<span class="num">2.3s</span>)
+
+  devmem initialised. <span class="num">7</span> modules documented.</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="outputs">
+      <div class="container">
+        <p class="section-label">REAL OUTPUT</p>
+        <h2 class="section-heading">From init to query, captured in your repo.</h2>
+        <div class="outputs-grid">
+          <article class="output-card">
+            <h3 class="output-title">DevMem Root Directory Snapshot</h3>
+            <p class="output-copy">After running init and capture, documentation artifacts live under .devmem with modules, changelog, state, config, and architecture files.</p>
+            <img class="output-image" src="./images/devmem root dir.png" alt="DevMem root directory showing .devmem docs, modules, changelog, state, and config files">
+          </article>
+          <article class="output-card">
+            <h3 class="output-title">Query Mode Example</h3>
+            <p class="output-copy">Query responses are grounded in live module docs and architecture context, so answers stay aligned with your current codebase.</p>
+            <div class="query-shell" role="img" aria-label="Terminal output of devmem query explaining the cmd module">
+              <div class="query-titlebar">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+                <span class="query-name">devmem query - zsh</span>
+              </div>
+              <pre class="query-body"><span class="prompt">$</span> <span class="cmd">devmem query "can you explain me the cmd module ?"</span>
+
+## Purpose
+The cmd module implements the main CLI interface, providing various commands that users can run to interact with the DevMem system.
+
+## Available Commands
+- root command
+- capture command
+- init command
+- query command
+- status command
+
+## Key Files
+- capture.go
+- init.go
+- query.go
+- root.go
+- status.go
+
+## Dependencies
+- ai
+- crawler
+- state
+
+## Technical Notes
+The module follows the Cobra CLI pattern with each command in separate files. capture.go and init.go contain the most complex workflows for change capture and initialization.</pre>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="value">
+      <div class="container">
+        <p class="section-label">WHY DEVMEM</p>
+        <h2 class="section-heading">Built for how developers actually work.</h2>
+        <div class="value-grid">
+          <article class="value-card">
+            <h3 class="value-title">Language agnostic</h3>
+            <p class="value-body">Works on any codebase - Go, TypeScript, Python, Rust, Ruby. DevMem reads structure and git history, not syntax trees.</p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-title">Parallel analysis</h3>
+            <p class="value-body">Module documentation is generated concurrently. A 20-module codebase takes the same time as a 3-module one.</p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-title">Git-native changelog</h3>
+            <p class="value-body">Every changelog entry ID is a commit hash. Documentation history and code history are permanently linked - no drift, no orphans.</p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-title">Surgical updates</h3>
+            <p class="value-body">On capture, only the sections that changed are rewritten. Unchanged documentation is never touched - no noise, no false diffs.</p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-title">Offline first</h3>
+            <p class="value-body">Your documentation lives in .devmem/ inside your repo. It is git-tracked, diffable, and readable without any external service.</p>
+          </article>
+          <article class="value-card">
+            <h3 class="value-title">Ask your codebase</h3>
+            <p class="value-body">The query command gives every developer on your team an AI answer grounded in real, current documentation - not hallucinated from training data.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="container">
+        <h2 class="section-heading">Start in 30 seconds.</h2>
+        <div class="install-steps">
+          <div class="install-step">
+            <span class="install-label">Step 1</span>
+            <pre class="install-code">go install github.com/Surya-sourav/devmem@latest</pre>
+          </div>
+          <div class="install-step">
+            <span class="install-label">Step 2</span>
+            <pre class="install-code">devmem help</pre>
+          </div>
+          <div class="install-step">
+            <span class="install-label">Step 3</span>
+            <pre class="install-code">cd your-project && devmem init</pre>
+          </div>
+          <p class="install-note">Requires Go 1.21+  ·  macOS, Linux, Windows  ·  Anthropic API key</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-wrap">
+          <img class="footer-logo" src="./images/devmemlogo.png" alt="DevMem logo">
+          <p class="footer-brand">devmem</p>
+        </div>
+        <p class="footer-copy">AI-powered memory for your codebase.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Surya-sourav/DevMem">GitHub</a>
+        <a href="#how">Docs</a>
+        <a href="https://www.linkedin.com/in/suryaparida/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="#install">MIT License</a>
+      </div>
+    </div>
+    <p class="footer-love">Made with love ❤️ for developers by a Developer</p>
+  </footer>
+</body>
 </html>
