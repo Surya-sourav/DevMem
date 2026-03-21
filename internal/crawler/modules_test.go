@@ -91,3 +91,31 @@ func TestModuleScorerDetect_ContainerDirRecursion(t *testing.T) {
 		t.Fatalf("expected internal/ai module, got %s", mods[0].RootPath)
 	}
 }
+
+func TestModuleScorerDetect_WebModule(t *testing.T) {
+	tree := &FileNode{
+		Name: "repo",
+		Path: ".",
+		Type: "dir",
+		Children: []*FileNode{
+			{
+				Name: "devmem-web",
+				Path: "devmem-web",
+				Type: "dir",
+				Children: []*FileNode{
+					{Name: "index.html", Path: "devmem-web/index.html", Type: "file", Ext: ".html"},
+					{Name: "styles.css", Path: "devmem-web/styles.css", Type: "file", Ext: ".css"},
+				},
+			},
+		},
+	}
+
+	scorer := &ModuleScorer{Tree: tree, Config: nil}
+	mods := scorer.Detect()
+	if len(mods) == 0 {
+		t.Fatalf("expected web module to be detected")
+	}
+	if mods[0].RootPath != "devmem-web" {
+		t.Fatalf("expected module path devmem-web, got %s", mods[0].RootPath)
+	}
+}

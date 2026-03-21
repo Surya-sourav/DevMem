@@ -29,6 +29,9 @@ var entryCandidates = map[string]struct{}{
 	"main.go":     {},
 	"index.ts":    {},
 	"index.js":    {},
+	"index.html":  {},
+	"main.ts":     {},
+	"main.js":     {},
 	"app.py":      {},
 	"__init__.py": {},
 	"mod.rs":      {},
@@ -179,6 +182,7 @@ func pathCovered(path string, roots []string) bool {
 func sourceFileCount(node *FileNode) int {
 	exts := map[string]struct{}{
 		".go": {}, ".ts": {}, ".js": {}, ".py": {}, ".rs": {}, ".rb": {}, ".java": {}, ".cs": {}, ".cpp": {}, ".c": {}, ".swift": {}, ".kt": {},
+		".tsx": {}, ".jsx": {}, ".html": {}, ".css": {}, ".scss": {}, ".sass": {}, ".vue": {}, ".svelte": {},
 	}
 	count := 0
 	var walk func(*FileNode)

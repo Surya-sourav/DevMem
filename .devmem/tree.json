@@ -11,7 +11,44 @@
         {
           "name": "changelog",
           "path": ".devmem/changelog",
-          "type": "dir"
+          "type": "dir",
+          "children": [
+            {
+              "name": "58e4b7810688b5c720c183626cd8ab4e9881ed6d.md",
+              "path": ".devmem/changelog/58e4b7810688b5c720c183626cd8ab4e9881ed6d.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 212
+            },
+            {
+              "name": "b145dd4993e5-worktree-20260321T185906Z.md",
+              "path": ".devmem/changelog/b145dd4993e5-worktree-20260321T185906Z.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 420
+            },
+            {
+              "name": "b145dd4993e5402a8181f2afb081064f8c6a2850.md",
+              "path": ".devmem/changelog/b145dd4993e5402a8181f2afb081064f8c6a2850.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 550
+            },
+            {
+              "name": "d1739507c8cb-worktree-20260321T181358Z.md",
+              "path": ".devmem/changelog/d1739507c8cb-worktree-20260321T181358Z.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 502
+            },
+            {
+              "name": "d1739507c8cb0cd7ed74ed54bc2ef7c1ccc9a7e2.md",
+              "path": ".devmem/changelog/d1739507c8cb0cd7ed74ed54bc2ef7c1ccc9a7e2.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 210
+            }
+          ]
         },
         {
           "name": "docs",
@@ -21,16 +58,88 @@
             {
               "name": "modules",
               "path": ".devmem/docs/modules",
-              "type": "dir"
+              "type": "dir",
+              "children": [
+                {
+                  "name": "ai.md",
+                  "path": ".devmem/docs/modules/ai.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 1134
+                },
+                {
+                  "name": "cmd.md",
+                  "path": ".devmem/docs/modules/cmd.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 2283
+                },
+                {
+                  "name": "crawler.md",
+                  "path": ".devmem/docs/modules/crawler.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 1437
+                },
+                {
+                  "name": "docs.md",
+                  "path": ".devmem/docs/modules/docs.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 1587
+                },
+                {
+                  "name": "git.md",
+                  "path": ".devmem/docs/modules/git.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 1068
+                },
+                {
+                  "name": "state.md",
+                  "path": ".devmem/docs/modules/state.md",
+                  "type": "file",
+                  "ext": ".md",
+                  "size": 959
+                }
+              ]
+            },
+            {
+              "name": "master-architecture.md",
+              "path": ".devmem/docs/master-architecture.md",
+              "type": "file",
+              "ext": ".md",
+              "size": 1622
+            },
+            {
+              "name": "master-architecture.mermaid",
+              "path": ".devmem/docs/master-architecture.mermaid",
+              "type": "file",
+              "ext": ".mermaid",
+              "size": 263
             }
           ]
+        },
+        {
+          "name": "config.json",
+          "path": ".devmem/config.json",
+          "type": "file",
+          "ext": ".json",
+          "size": 679
+        },
+        {
+          "name": "state.json",
+          "path": ".devmem/state.json",
+          "type": "file",
+          "ext": ".json",
+          "size": 170
         },
         {
           "name": "tree.json",
           "path": ".devmem/tree.json",
           "type": "file",
           "ext": ".json",
-          "size": 6027
+          "size": 6193
         }
       ]
     },
@@ -44,7 +153,7 @@
           "path": "cmd/capture.go",
           "type": "file",
           "ext": ".go",
-          "size": 6935
+          "size": 11807
         },
         {
           "name": "init.go",
@@ -73,6 +182,153 @@
           "type": "file",
           "ext": ".go",
           "size": 1407
+        }
+      ]
+    },
+    {
+      "name": "devmem-web",
+      "path": "devmem-web",
+      "type": "dir",
+      "children": [
+        {
+          "name": "images",
+          "path": "devmem-web/images",
+          "type": "dir",
+          "children": [
+            {
+              "name": "10_Finance.gif",
+              "path": "devmem-web/images/10_Finance.gif",
+              "type": "file",
+              "ext": ".gif",
+              "size": 234232
+            },
+            {
+              "name": "11_Headshot.png",
+              "path": "devmem-web/images/11_Headshot.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 69529
+            },
+            {
+              "name": "12_AppleAppStore.png",
+              "path": "devmem-web/images/12_AppleAppStore.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 2082
+            },
+            {
+              "name": "13_GoogleAppStore.png",
+              "path": "devmem-web/images/13_GoogleAppStore.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 2219
+            },
+            {
+              "name": "14_PulseLogo2.png",
+              "path": "devmem-web/images/14_PulseLogo2.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 1948
+            },
+            {
+              "name": "15_facebook2x.png",
+              "path": "devmem-web/images/15_facebook2x.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 798
+            },
+            {
+              "name": "16_twitter2x.png",
+              "path": "devmem-web/images/16_twitter2x.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 683
+            },
+            {
+              "name": "17_linkedin2x.png",
+              "path": "devmem-web/images/17_linkedin2x.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 674
+            },
+            {
+              "name": "18_instagram2x.png",
+              "path": "devmem-web/images/18_instagram2x.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 1580
+            },
+            {
+              "name": "19_Beefree-logo.png",
+              "path": "devmem-web/images/19_Beefree-logo.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 12592
+            },
+            {
+              "name": "1_14200966_large.jpg",
+              "path": "devmem-web/images/1_14200966_large.jpg",
+              "type": "file",
+              "ext": ".jpg",
+              "size": 241040
+            },
+            {
+              "name": "3_Abstract_BG_1.png",
+              "path": "devmem-web/images/3_Abstract_BG_1.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 212379
+            },
+            {
+              "name": "4_pawel-czerwinski-TLzxYiyXw1o-unsplash.jpg",
+              "path": "devmem-web/images/4_pawel-czerwinski-TLzxYiyXw1o-unsplash.jpg",
+              "type": "file",
+              "ext": ".jpg",
+              "size": 143339
+            },
+            {
+              "name": "5_Pulse_Logo.png",
+              "path": "devmem-web/images/5_Pulse_Logo.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 1948
+            },
+            {
+              "name": "6_DashboardUi2.png",
+              "path": "devmem-web/images/6_DashboardUi2.png",
+              "type": "file",
+              "ext": ".png",
+              "size": 333410
+            },
+            {
+              "name": "7_SmartSegments_Resized.jpg",
+              "path": "devmem-web/images/7_SmartSegments_Resized.jpg",
+              "type": "file",
+              "ext": ".jpg",
+              "size": 425815
+            },
+            {
+              "name": "8_Dashboard.gif",
+              "path": "devmem-web/images/8_Dashboard.gif",
+              "type": "file",
+              "ext": ".gif",
+              "size": 66453
+            },
+            {
+              "name": "9_Insights.gif",
+              "path": "devmem-web/images/9_Insights.gif",
+              "type": "file",
+              "ext": ".gif",
+              "size": 225189
+            }
+          ]
+        },
+        {
+          "name": "index.html",
+          "path": "devmem-web/index.html",
+          "type": "file",
+          "ext": ".html",
+          "size": 42908
         }
       ]
     },
@@ -173,7 +429,7 @@
               "path": "internal/docs/writer.go",
               "type": "file",
               "ext": ".go",
-              "size": 8757
+              "size": 11292
             }
           ]
         },
@@ -187,7 +443,7 @@
               "path": "internal/git/diff-capture.go",
               "type": "file",
               "ext": ".go",
-              "size": 1932
+              "size": 2787
             },
             {
               "name": "hooks.go",
@@ -229,23 +485,31 @@
       ]
     },
     {
+      "name": ".DS_Store",
+      "path": ".DS_Store",
+      "type": "file",
+      "ext": ".ds_store",
+      "size": 8196
+    },
+    {
       "name": ".gitignore",
       "path": ".gitignore",
       "type": "file",
       "ext": ".gitignore",
-      "size": 25
+      "size": 34
+    },
+    {
+      "name": ".goreleaser.yaml",
+      "path": ".goreleaser.yaml",
+      "type": "file",
+      "ext": ".yaml",
+      "size": 358
     },
     {
       "name": "LICENSE",
       "path": "LICENSE",
       "type": "file",
       "size": 1078
-    },
-    {
-      "name": "devmem",
-      "path": "devmem",
-      "type": "file",
-      "size": 13614770
     },
     {
       "name": "go.mod",
