@@ -34,6 +34,12 @@ var entryCandidates = map[string]struct{}{
 	"mod.rs":      {},
 }
 
+var containerDirs = map[string]struct{}{
+	"internal": {},
+	"pkg":      {},
+	"vendor":   {},
+}
+
 // Detect discovers modules from explicit config or heuristic analysis.
 func (m *ModuleScorer) Detect() []Module {
 	if m.Tree == nil {
@@ -74,6 +80,17 @@ func (m *ModuleScorer) detectNode(node *FileNode, depth int) []Module {
 		return nil
 	}
 	if node.Path != "." {
+		if _, isContainer := containerDirs[strings.ToLower(node.Name)]; isContainer {
+			out := make([]Module, 0)
+			for _, child := range node.Children {
+				if child.Type != "dir" {
+					continue
+				}
+				out = append(out, m.detectNode(child, depth+1)...)
+			}
+			return out
+		}
+
 		score, entry, count := scoreDirectory(node, depth)
 		if score >= 3 {
 			name := filepath.Base(node.Path)
@@ -115,7 +132,7 @@ func scoreDirectory(node *FileNode, depth int) (score int, entry string, fileCou
 		score += 2
 	}
 	fileCount = sourceFileCount(node)
-	if fileCount > 5 {
+	if fileCount >= 2 {
 		score++
 	}
 	return score, entry, fileCount

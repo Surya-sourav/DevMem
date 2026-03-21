@@ -26,11 +26,11 @@
           ]
         },
         {
-          "name": "credentials.json",
-          "path": ".devmem/credentials.json",
+          "name": "tree.json",
+          "path": ".devmem/tree.json",
           "type": "file",
           "ext": ".json",
-          "size": 137
+          "size": 6027
         }
       ]
     },
@@ -51,7 +51,7 @@
           "path": "cmd/init.go",
           "type": "file",
           "ext": ".go",
-          "size": 9820
+          "size": 9963
         },
         {
           "name": "query.go",
@@ -98,14 +98,14 @@
               "path": "internal/ai/prompts.go",
               "type": "file",
               "ext": ".go",
-              "size": 5858
+              "size": 6296
             },
             {
               "name": "schema.go",
               "path": "internal/ai/schema.go",
               "type": "file",
               "ext": ".go",
-              "size": 4238
+              "size": 5234
             }
           ]
         },
@@ -119,14 +119,14 @@
               "path": "internal/crawler/modules.go",
               "type": "file",
               "ext": ".go",
-              "size": 4159
+              "size": 4532
             },
             {
               "name": "modules_test.go",
               "path": "internal/crawler/modules_test.go",
               "type": "file",
               "ext": ".go",
-              "size": 1480
+              "size": 2318
             },
             {
               "name": "tree.go",
@@ -229,6 +229,13 @@
       ]
     },
     {
+      "name": ".gitignore",
+      "path": ".gitignore",
+      "type": "file",
+      "ext": ".gitignore",
+      "size": 25
+    },
+    {
       "name": "LICENSE",
       "path": "LICENSE",
       "type": "file",
@@ -238,7 +245,7 @@
       "name": "devmem",
       "path": "devmem",
       "type": "file",
-      "size": 13614610
+      "size": 13614770
     },
     {
       "name": "go.mod",

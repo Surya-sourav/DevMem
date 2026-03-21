@@ -56,3 +56,38 @@ func TestModuleScorerDetect(t *testing.T) {
 		})
 	}
 }
+
+func TestModuleScorerDetect_ContainerDirRecursion(t *testing.T) {
+	tree := &FileNode{
+		Name: "repo",
+		Path: ".",
+		Type: "dir",
+		Children: []*FileNode{
+			{
+				Name: "internal",
+				Path: "internal",
+				Type: "dir",
+				Children: []*FileNode{
+					{
+						Name: "ai",
+						Path: "internal/ai",
+						Type: "dir",
+						Children: []*FileNode{
+							{Name: "client.go", Path: "internal/ai/client.go", Type: "file", Ext: ".go"},
+							{Name: "schema.go", Path: "internal/ai/schema.go", Type: "file", Ext: ".go"},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	scorer := &ModuleScorer{Tree: tree, Config: nil}
+	mods := scorer.Detect()
+	if len(mods) == 0 {
+		t.Fatalf("expected at least one module under internal container")
+	}
+	if mods[0].RootPath != "internal/ai" {
+		t.Fatalf("expected internal/ai module, got %s", mods[0].RootPath)
+	}
+}

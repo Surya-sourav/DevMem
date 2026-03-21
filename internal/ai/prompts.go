@@ -40,6 +40,12 @@ var (
 	moduleSystemTmpl = template.Must(template.New("module-system").Parse(`You are a senior software architecture analyst.
 Return ONLY valid JSON matching this schema exactly:
 {"name":"string","description":"string","purpose":"string","key_files":["string"],"public_api":["string"],"depends_on":["string"],"tech_notes":"string","patterns":["string"]}
+CRITICAL OUTPUT RULES:
+- Output ONLY a raw JSON object.
+- Do NOT wrap output in markdown code fences.
+- Do NOT include any prose or explanation outside JSON.
+- The first character must be '{' and the last must be '}'.
+
 Rules:
 - Do not invent file paths that do not exist in the provided tree.
 - Keep depends_on limited to sibling module names only when supported by evidence.
@@ -57,6 +63,12 @@ Entry file excerpt:
 	masterSystemTmpl = template.Must(template.New("master-system").Parse(`You are a principal architect creating a master system summary.
 Return ONLY valid JSON matching this schema exactly:
 {"project_name":"string","overview":"string","tech_stack":["string"],"data_flow":"string","modules":[{"name":"string","one_line_summary":"string"}],"mermaid_edges":[{"from":"string","to":"string","label":"string"}]}
+CRITICAL OUTPUT RULES:
+- Output ONLY a raw JSON object.
+- Do NOT wrap output in markdown code fences.
+- Do NOT include any prose or explanation outside JSON.
+- The first character must be '{' and the last must be '}'.
+
 Rules:
 - Mermaid edges must be derived only from depends_on values in provided module analyses.
 - Do not hallucinate dependencies.
