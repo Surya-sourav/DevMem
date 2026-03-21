@@ -1,0 +1,258 @@
+{
+  "name": "DevMem",
+  "path": ".",
+  "type": "dir",
+  "children": [
+    {
+      "name": ".devmem",
+      "path": ".devmem",
+      "type": "dir",
+      "children": [
+        {
+          "name": "changelog",
+          "path": ".devmem/changelog",
+          "type": "dir"
+        },
+        {
+          "name": "docs",
+          "path": ".devmem/docs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "modules",
+              "path": ".devmem/docs/modules",
+              "type": "dir"
+            }
+          ]
+        },
+        {
+          "name": "credentials.json",
+          "path": ".devmem/credentials.json",
+          "type": "file",
+          "ext": ".json",
+          "size": 137
+        }
+      ]
+    },
+    {
+      "name": "cmd",
+      "path": "cmd",
+      "type": "dir",
+      "children": [
+        {
+          "name": "capture.go",
+          "path": "cmd/capture.go",
+          "type": "file",
+          "ext": ".go",
+          "size": 6935
+        },
+        {
+          "name": "init.go",
+          "path": "cmd/init.go",
+          "type": "file",
+          "ext": ".go",
+          "size": 9820
+        },
+        {
+          "name": "query.go",
+          "path": "cmd/query.go",
+          "type": "file",
+          "ext": ".go",
+          "size": 2075
+        },
+        {
+          "name": "root.go",
+          "path": "cmd/root.go",
+          "type": "file",
+          "ext": ".go",
+          "size": 2575
+        },
+        {
+          "name": "status.go",
+          "path": "cmd/status.go",
+          "type": "file",
+          "ext": ".go",
+          "size": 1407
+        }
+      ]
+    },
+    {
+      "name": "internal",
+      "path": "internal",
+      "type": "dir",
+      "children": [
+        {
+          "name": "ai",
+          "path": "internal/ai",
+          "type": "dir",
+          "children": [
+            {
+              "name": "client.go",
+              "path": "internal/ai/client.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 5346
+            },
+            {
+              "name": "prompts.go",
+              "path": "internal/ai/prompts.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 5858
+            },
+            {
+              "name": "schema.go",
+              "path": "internal/ai/schema.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 4238
+            }
+          ]
+        },
+        {
+          "name": "crawler",
+          "path": "internal/crawler",
+          "type": "dir",
+          "children": [
+            {
+              "name": "modules.go",
+              "path": "internal/crawler/modules.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 4159
+            },
+            {
+              "name": "modules_test.go",
+              "path": "internal/crawler/modules_test.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 1480
+            },
+            {
+              "name": "tree.go",
+              "path": "internal/crawler/tree.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 602
+            },
+            {
+              "name": "walker.go",
+              "path": "internal/crawler/walker.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 4276
+            },
+            {
+              "name": "walker_test.go",
+              "path": "internal/crawler/walker_test.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 845
+            }
+          ]
+        },
+        {
+          "name": "doc-operators",
+          "path": "internal/doc-operators",
+          "type": "dir"
+        },
+        {
+          "name": "docs",
+          "path": "internal/docs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "master.go",
+              "path": "internal/docs/master.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 3093
+            },
+            {
+              "name": "writer.go",
+              "path": "internal/docs/writer.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 8757
+            }
+          ]
+        },
+        {
+          "name": "git",
+          "path": "internal/git",
+          "type": "dir",
+          "children": [
+            {
+              "name": "diff-capture.go",
+              "path": "internal/git/diff-capture.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 1932
+            },
+            {
+              "name": "hooks.go",
+              "path": "internal/git/hooks.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 1881
+            }
+          ]
+        },
+        {
+          "name": "state",
+          "path": "internal/state",
+          "type": "dir",
+          "children": [
+            {
+              "name": "config.go",
+              "path": "internal/state/config.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 4329
+            },
+            {
+              "name": "credentials.go",
+              "path": "internal/state/credentials.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 1118
+            },
+            {
+              "name": "lock.go",
+              "path": "internal/state/lock.go",
+              "type": "file",
+              "ext": ".go",
+              "size": 273
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LICENSE",
+      "path": "LICENSE",
+      "type": "file",
+      "size": 1078
+    },
+    {
+      "name": "devmem",
+      "path": "devmem",
+      "type": "file",
+      "size": 13614610
+    },
+    {
+      "name": "go.mod",
+      "path": "go.mod",
+      "type": "file",
+      "ext": ".mod",
+      "size": 780
+    },
+    {
+      "name": "main.go",
+      "path": "main.go",
+      "type": "file",
+      "ext": ".go",
+      "size": 1241
+    }
+  ]
+}
