@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/yourusername/devmem/internal/state"
+	"github.com/Surya-sourav/devmem/internal/state"
 )
 
 // Module describes a detected documentation module.

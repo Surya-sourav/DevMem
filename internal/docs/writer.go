@@ -9,8 +9,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/yourusername/devmem/internal/ai"
-	"github.com/yourusername/devmem/internal/crawler"
+	"github.com/Surya-sourav/devmem/internal/ai"
+	"github.com/Surya-sourav/devmem/internal/crawler"
 )
 
 var moduleDocTemplate = template.Must(template.New("module-doc").Parse(`---
