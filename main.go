@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yourusername/devmem/cmd"
+	"github.com/Surya-sourav/devmem/cmd"
 )
 
 func main() {

@@ -26,9 +26,9 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Surya-sourav/devmem/internal/state"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/yourusername/devmem/internal/state"
 )
 
 var (

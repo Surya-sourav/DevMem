@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Surya-sourav/devmem/internal/ai"
 	"github.com/spf13/cobra"
-	"github.com/yourusername/devmem/internal/ai"
 )
 
 var queryCmd = &cobra.Command{
