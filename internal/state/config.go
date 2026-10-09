@@ -11,6 +11,7 @@ import (
 // Config stores the user-editable configuration for DevMem.
 type Config struct {
 	Version       string                  `json:"version"`
+	Provider      string                  `json:"provider"`
 	Modules       map[string]ModuleConfig `json:"modules,omitempty"`
 	Ignore        []string                `json:"ignore"`
 	AIModel       string                  `json:"ai_model"`
@@ -34,6 +35,7 @@ type State struct {
 func DefaultConfig() *Config {
 	return &Config{
 		Version:       "1",
+		Provider:      "anthropic",
 		Modules:       map[string]ModuleConfig{},
 		Ignore:        []string{"node_modules", "vendor", ".git", "dist", "build", "__pycache__", ".venv", "*.lock", "*.sum", "*.min.js"},
 		AIModel:       "claude-sonnet-4-20250514",
@@ -77,8 +79,8 @@ func LoadConfig(repoRoot string) (*Config, error) {
 	if cfg.Version == "" {
 		cfg.Version = "1"
 	}
-	if cfg.AIModel == "" {
-		cfg.AIModel = "claude-sonnet-4-20250514"
+	if cfg.Provider == "" {
+		cfg.Provider = "anthropic"
 	}
 	if cfg.MaxConcurrent <= 0 {
 		cfg.MaxConcurrent = 5

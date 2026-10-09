@@ -22,25 +22,36 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"strings"
 
+	"github.com/Surya-sourav/devmem/internal/ai"
 	"github.com/Surya-sourav/devmem/internal/state"
+	"github.com/Surya-sourav/devmem/internal/ui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var (
-	repoDir string
-	model   string
-	apiKey  string
-	keyFrom string
+	repoDir  string
+	model    string
+	provider string
+	apiKey   string
+	keyFrom  string
+
+	providerFromFlag bool
+	modelFromFlag    bool
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "devmem",
-	Short: "Persistent AI memory for codebases",
+	Use:           "devmem",
+	Short:         "Persistent AI memory for codebases",
+	SilenceUsage:  true,
+	SilenceErrors: true,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if repoDir == "" {
 			cwd, err := os.Getwd()
@@ -54,36 +65,83 @@ var rootCmd = &cobra.Command{
 			return fmt.Errorf("resolve --dir: %w", err)
 		}
 		repoDir = abs
-		apiKey = os.Getenv("DEVMEM_API_KEY")
-		keyFrom = ""
-		if apiKey != "" {
-			keyFrom = "env"
-		} else {
-			persisted, loadErr := state.LoadAPIKey(repoDir)
-			if loadErr != nil {
-				return fmt.Errorf("load persisted api key: %w", loadErr)
-			}
-			if persisted != "" {
-				apiKey = persisted
-				keyFrom = "persisted"
+
+		cfg, err := state.LoadConfig(repoDir)
+		if err != nil {
+			return fmt.Errorf("load config: %w", err)
+		}
+		providerFromFlag = cmd.Flags().Changed("provider")
+		modelFromFlag = cmd.Flags().Changed("model")
+		if !providerFromFlag {
+			if env := os.Getenv("DEVMEM_PROVIDER"); env != "" {
+				provider = env
+				providerFromFlag = true
+			} else {
+				provider = cfg.Provider
 			}
 		}
-		if model == "" {
-			model = "claude-sonnet-4-20250514"
+		provider = strings.ToLower(strings.TrimSpace(provider))
+		if !ai.ValidProvider(provider) {
+			return fmt.Errorf("unknown provider %q; use anthropic or openai", provider)
 		}
-		return nil
+		return selectProvider(provider, cfg)
 	},
 }
 
-// Execute runs the root command.
+// selectProvider points the global key and model at the given provider.
+func selectProvider(p string, cfg *state.Config) error {
+	provider = p
+	if !modelFromFlag {
+		model = cfg.AIModel
+		if model == "" || cfg.Provider != p {
+			model = ai.DefaultModel(p)
+		}
+	}
+	apiKey, keyFrom = "", ""
+	for _, name := range keyEnvVars(p) {
+		if v := strings.TrimSpace(os.Getenv(name)); v != "" {
+			apiKey, keyFrom = v, name
+			return nil
+		}
+	}
+	persisted, err := state.LoadAPIKey(repoDir, p)
+	if err != nil {
+		return fmt.Errorf("load persisted api key: %w", err)
+	}
+	if persisted != "" {
+		apiKey, keyFrom = persisted, "persisted"
+	}
+	return nil
+}
+
+func keyEnvVars(p string) []string {
+	if p == ai.ProviderOpenAI {
+		return []string{"DEVMEM_API_KEY", "OPENAI_API_KEY"}
+	}
+	return []string{"DEVMEM_API_KEY", "ANTHROPIC_API_KEY"}
+}
+
+// Execute runs the root command. The context is cancelled on Ctrl+C so
+// in-flight API calls stop instead of leaving half-written docs behind.
 func Execute() error {
-	return rootCmd.Execute()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	go func() {
+		<-ctx.Done()
+		stop()
+	}()
+	err := rootCmd.ExecuteContext(ctx)
+	if err != nil && ctx.Err() != nil {
+		return ui.ErrCancelled
+	}
+	return err
 }
 
 func init() {
 	cwd, _ := os.Getwd()
 	rootCmd.PersistentFlags().StringVar(&repoDir, "dir", cwd, "Repository root directory")
-	rootCmd.PersistentFlags().StringVar(&model, "model", "claude-sonnet-4-20250514", "AI model")
+	rootCmd.PersistentFlags().StringVar(&provider, "provider", "", "AI provider: anthropic or openai (default from config)")
+	rootCmd.PersistentFlags().StringVar(&model, "model", "", "AI model (default depends on provider)")
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")

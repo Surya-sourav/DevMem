@@ -17,6 +17,7 @@ import (
 	"github.com/Surya-sourav/devmem/internal/docs"
 	"github.com/Surya-sourav/devmem/internal/git"
 	"github.com/Surya-sourav/devmem/internal/state"
+	"github.com/Surya-sourav/devmem/internal/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -50,15 +51,28 @@ var captureCmd = &cobra.Command{
 			fromCommit = "HEAD~1"
 		}
 
-		client := ai.NewClient(apiKey, model)
+		ui.Header("capture", shortCommit(head))
+		client := ai.NewClient(provider, apiKey, model)
 		totalCaptured := 0
-		newModsAdded, newModsErr := detectAndDocumentNewModules(ctx, client, cfg)
-		if newModsErr != nil {
-			return newModsErr
+
+		var warnings []string
+		err = ui.Step("Checking for new modules", func() (string, error) {
+			added, warns, err := detectAndDocumentNewModules(ctx, client, cfg)
+			warnings = warns
+			if err != nil {
+				return "", err
+			}
+			totalCaptured += added
+			if added == 0 {
+				return "none", nil
+			}
+			return plural(added, "module") + " documented", nil
+		})
+		for _, w := range warnings {
+			ui.Warn(truncate(w, 400), "")
 		}
-		if newModsAdded > 0 {
-			totalCaptured += newModsAdded
-			fmt.Fprintf(os.Stderr, "Detected and documented %d new module(s).\n", newModsAdded)
+		if err != nil {
+			return err
 		}
 
 		commitFiles, err := git.GetChangedFiles(repoDir, fromCommit, head)
@@ -70,15 +84,9 @@ var captureCmd = &cobra.Command{
 			if patchErr != nil {
 				return fmt.Errorf("get diff patch: %w", patchErr)
 			}
-			captured, structural, processErr := processCaptureChange(ctx, client, cfg, head, commitFiles, commitPatch)
-			if processErr != nil {
-				return processErr
-			}
-			totalCaptured += captured
-			if structural {
-				if err := regenerateMaster(ctx, client); err != nil {
-					return err
-				}
+			label := "Capturing commit " + shortCommit(head)
+			if err := captureStep(ctx, client, cfg, label, head, commitFiles, commitPatch, &totalCaptured); err != nil {
+				return err
 			}
 		}
 
@@ -92,15 +100,8 @@ var captureCmd = &cobra.Command{
 				return fmt.Errorf("get worktree diff patch: %w", patchErr)
 			}
 			worktreeID := fmt.Sprintf("%s-worktree-%s", shortCommit(head), time.Now().UTC().Format("20060102T150405Z"))
-			captured, structural, processErr := processCaptureChange(ctx, client, cfg, worktreeID, worktreeFiles, worktreePatch)
-			if processErr != nil {
-				return processErr
-			}
-			totalCaptured += captured
-			if structural {
-				if err := regenerateMaster(ctx, client); err != nil {
-					return err
-				}
+			if err := captureStep(ctx, client, cfg, "Capturing uncommitted changes", worktreeID, worktreeFiles, worktreePatch, &totalCaptured); err != nil {
+				return err
 			}
 		}
 
@@ -113,14 +114,41 @@ var captureCmd = &cobra.Command{
 			return fmt.Errorf("write state: %w", err)
 		}
 
+		ui.Blank()
 		if totalCaptured == 0 {
-			fmt.Fprintln(os.Stderr, "No module-affecting changes detected.")
-			return nil
+			ui.Info("No module-affecting changes detected.", "")
+		} else {
+			ui.Success(fmt.Sprintf("Captured changes for %s", plural(totalCaptured, "module")), "")
 		}
-
-		fmt.Fprintf(os.Stderr, "Captured changes for %d module(s).\n", totalCaptured)
+		ui.Blank()
 		return nil
 	},
+}
+
+func captureStep(ctx context.Context, client *ai.Client, cfg *state.Config, label, changeID string, files []string, patch string, total *int) error {
+	var structural bool
+	err := ui.Step(label, func() (string, error) {
+		captured, isStructural, err := processCaptureChange(ctx, client, cfg, changeID, files, patch)
+		if err != nil {
+			return "", err
+		}
+		structural = isStructural
+		*total += captured
+		if captured == 0 {
+			return "no tracked modules touched", nil
+		}
+		return plural(captured, "module") + " updated", nil
+	})
+	if err != nil || !structural {
+		return err
+	}
+	return ui.Step("Refreshing architecture overview", func() (string, error) {
+		start := time.Now()
+		if err := regenerateMaster(ctx, client); err != nil {
+			return "", err
+		}
+		return elapsed(start), nil
+	})
 }
 
 func init() {
@@ -195,17 +223,14 @@ func regenerateMaster(ctx context.Context, client *ai.Client) error {
 	return nil
 }
 
-func detectAndDocumentNewModules(ctx context.Context, client *ai.Client, cfg *state.Config) (int, error) {
-	ignoreRules := append([]string{}, cfg.Ignore...)
-	ignoreRules = append(ignoreRules, crawler.LoadIgnoreFile(filepath.Join(repoDir, ".gitignore"))...)
-	ignoreRules = append(ignoreRules, crawler.LoadIgnoreFile(filepath.Join(repoDir, ".devmemignore"))...)
-	w := &crawler.Walker{Root: repoDir, IgnoreRules: ignoreRules}
+func detectAndDocumentNewModules(ctx context.Context, client *ai.Client, cfg *state.Config) (int, []string, error) {
+	w := &crawler.Walker{Root: repoDir, IgnoreRules: ignoreRules(cfg)}
 	tree, err := w.Walk()
 	if err != nil {
-		return 0, fmt.Errorf("crawl repository for module detection: %w", err)
+		return 0, nil, fmt.Errorf("crawl repository for module detection: %w", err)
 	}
 	if err := state.WriteTree(repoDir, tree); err != nil {
-		return 0, fmt.Errorf("write tree snapshot: %w", err)
+		return 0, nil, fmt.Errorf("write tree snapshot: %w", err)
 	}
 
 	scorer := &crawler.ModuleScorer{Tree: tree, Config: nil}
@@ -217,7 +242,7 @@ func detectAndDocumentNewModules(ctx context.Context, client *ai.Client, cfg *st
 		}
 	}
 	if len(newModules) == 0 {
-		return 0, nil
+		return 0, nil, nil
 	}
 
 	sort.Slice(newModules, func(i, j int) bool {
@@ -233,14 +258,15 @@ func detectAndDocumentNewModules(ctx context.Context, client *ai.Client, cfg *st
 	}
 
 	added := 0
+	var warnings []string
 	for _, mod := range newModules {
 		analysis, analysisErr := analyseOneModule(ctx, repoDir, client, mod, tree, moduleNames)
 		if analysisErr != nil {
-			fmt.Fprintf(os.Stderr, "Skipping new module %s due to analysis error: %v\n", mod.Name, analysisErr)
+			warnings = append(warnings, fmt.Sprintf("Skipped new module %s: %v", mod.Name, analysisErr))
 			continue
 		}
 		if writeErr := docs.WriteModuleDoc(repoDir, mod, *analysis); writeErr != nil {
-			fmt.Fprintf(os.Stderr, "Skipping new module %s due to doc write error: %v\n", mod.Name, writeErr)
+			warnings = append(warnings, fmt.Sprintf("Skipped new module %s: %v", mod.Name, writeErr))
 			continue
 		}
 		name := uniqueModuleName(cfg, mod.Name)
@@ -248,16 +274,16 @@ func detectAndDocumentNewModules(ctx context.Context, client *ai.Client, cfg *st
 		added++
 	}
 	if added == 0 {
-		return 0, nil
+		return 0, warnings, nil
 	}
 
 	if err := state.WriteConfig(repoDir, cfg); err != nil {
-		return 0, fmt.Errorf("write config with new modules: %w", err)
+		return 0, nil, fmt.Errorf("write config with new modules: %w", err)
 	}
 	if err := regenerateMaster(ctx, client); err != nil {
-		return 0, err
+		return 0, warnings, err
 	}
-	return added, nil
+	return added, warnings, nil
 }
 
 func modulePathInConfig(cfg *state.Config, candidatePath string) bool {
@@ -396,7 +422,8 @@ func requireAPIKey(commandName string) error {
 	if strings.TrimSpace(apiKey) != "" {
 		return nil
 	}
-	return fmt.Errorf("anthropic API key is required for %s; set DEVMEM_API_KEY or run devmem init and save it", commandName)
+	return fmt.Errorf("no %s API key found for %s\nset %s or run devmem init and save the key",
+		ai.ProviderLabel(provider), commandName, strings.Join(keyEnvVars(provider), " or "))
 }
 
 func shortCommit(hash string) string {

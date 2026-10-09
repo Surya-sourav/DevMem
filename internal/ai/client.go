@@ -7,11 +7,42 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
-// Client wraps interactions with the Anthropic messages API.
+const (
+	ProviderAnthropic = "anthropic"
+	ProviderOpenAI    = "openai"
+)
+
+// Providers lists the supported AI providers in display order.
+var Providers = []string{ProviderAnthropic, ProviderOpenAI}
+
+// ValidProvider reports whether p is a supported provider.
+func ValidProvider(p string) bool {
+	return p == ProviderAnthropic || p == ProviderOpenAI
+}
+
+// ProviderLabel returns the human-readable name for a provider.
+func ProviderLabel(p string) string {
+	if p == ProviderOpenAI {
+		return "OpenAI"
+	}
+	return "Anthropic"
+}
+
+// DefaultModel returns the model used when none is configured.
+func DefaultModel(p string) string {
+	if p == ProviderOpenAI {
+		return "gpt-5-mini"
+	}
+	return "claude-sonnet-4-20250514"
+}
+
+// Client wraps interactions with the Anthropic and OpenAI APIs.
 type Client struct {
+	Provider   string
 	APIKey     string
 	Model      string
 	BaseURL    string
@@ -43,30 +74,49 @@ type ContentBlock struct {
 	Text string `json:"text"`
 }
 
-// NewClient creates a new Anthropic API client.
-func NewClient(apiKey, model string) *Client {
+type openAIRequest struct {
+	Model        string `json:"model"`
+	Instructions string `json:"instructions,omitempty"`
+	Input        string `json:"input"`
+}
+
+type openAIResponse struct {
+	Status            string `json:"status"`
+	IncompleteDetails *struct {
+		Reason string `json:"reason"`
+	} `json:"incomplete_details"`
+	Output []struct {
+		Type    string `json:"type"`
+		Content []struct {
+			Type string `json:"type"`
+			Text string `json:"text"`
+		} `json:"content"`
+	} `json:"output"`
+}
+
+// NewClient creates a new API client for the given provider.
+func NewClient(provider, apiKey, model string) *Client {
+	baseURL := "https://api.anthropic.com/v1/messages"
+	if provider == ProviderOpenAI {
+		baseURL = "https://api.openai.com/v1/responses"
+	}
 	return &Client{
-		APIKey:  apiKey,
-		Model:   model,
-		BaseURL: "https://api.anthropic.com/v1/messages",
+		Provider: provider,
+		APIKey:   apiKey,
+		Model:    model,
+		BaseURL:  baseURL,
 		HTTPClient: &http.Client{
-			Timeout: 120 * time.Second,
+			Timeout: 180 * time.Second,
 		},
 	}
 }
 
-// Call sends one prompt pair and returns the first text content block.
+// Call sends one prompt pair and returns the response text.
 func (c *Client) Call(ctx context.Context, system, user string, maxTokens int) (string, error) {
 	if maxTokens <= 0 {
 		maxTokens = 1200
 	}
-	payload := Request{
-		Model:     c.Model,
-		MaxTokens: maxTokens,
-		System:    system,
-		Messages:  []Message{{Role: "user", Content: user}},
-	}
-	b, err := json.Marshal(payload)
+	b, err := c.marshalRequest(system, user, maxTokens)
 	if err != nil {
 		return "", fmt.Errorf("marshal AI request: %w", err)
 	}
@@ -77,16 +127,16 @@ func (c *Client) Call(ctx context.Context, system, user string, maxTokens int) (
 		if err != nil {
 			return "", fmt.Errorf("create AI request: %w", err)
 		}
-		req.Header.Set("x-api-key", c.APIKey)
-		req.Header.Set("anthropic-version", "2023-06-01")
-		req.Header.Set("content-type", "application/json")
+		c.setHeaders(req)
 
 		resp, err := c.HTTPClient.Do(req)
 		if err != nil {
-			if attempt == 3 {
+			if attempt == 3 || ctx.Err() != nil {
 				return "", fmt.Errorf("send AI request: %w", err)
 			}
-			time.Sleep(backoff[attempt])
+			if err := sleep(ctx, backoff[attempt]); err != nil {
+				return "", err
+			}
 			continue
 		}
 
@@ -97,28 +147,112 @@ func (c *Client) Call(ctx context.Context, system, user string, maxTokens int) (
 		}
 
 		if resp.StatusCode == http.StatusOK {
-			var out Response
-			if err := json.Unmarshal(body, &out); err != nil {
-				return "", fmt.Errorf("parse AI response: %w", err)
-			}
-			if len(out.Content) == 0 {
-				return "", fmt.Errorf("AI response did not contain content blocks")
-			}
-			return out.Content[0].Text, nil
+			return c.parseResponse(body)
 		}
 
 		if resp.StatusCode == http.StatusTooManyRequests || resp.StatusCode >= 500 {
 			if attempt == 3 {
-				return "", fmt.Errorf("AI request failed after retries (status %d): %s", resp.StatusCode, string(body))
+				return "", fmt.Errorf("AI request failed after retries (%d): %s", resp.StatusCode, apiErrorMessage(body))
 			}
-			time.Sleep(backoff[attempt])
+			if err := sleep(ctx, backoff[attempt]); err != nil {
+				return "", err
+			}
 			continue
 		}
 
-		return "", fmt.Errorf("AI request failed with status %d: %s", resp.StatusCode, string(body))
+		return "", fmt.Errorf("%s rejected the request (%d): %s", ProviderLabel(c.Provider), resp.StatusCode, apiErrorMessage(body))
 	}
 
 	return "", fmt.Errorf("AI request failed unexpectedly")
+}
+
+func (c *Client) marshalRequest(system, user string, maxTokens int) ([]byte, error) {
+	if c.Provider == ProviderOpenAI {
+		// GPT-5 models spend part of the output budget on reasoning, so a
+		// tight max_output_tokens tends to return empty answers. Leave it unset.
+		return json.Marshal(openAIRequest{
+			Model:        c.Model,
+			Instructions: system,
+			Input:        user,
+		})
+	}
+	return json.Marshal(Request{
+		Model:     c.Model,
+		MaxTokens: maxTokens,
+		System:    system,
+		Messages:  []Message{{Role: "user", Content: user}},
+	})
+}
+
+func (c *Client) setHeaders(req *http.Request) {
+	req.Header.Set("content-type", "application/json")
+	if c.Provider == ProviderOpenAI {
+		req.Header.Set("Authorization", "Bearer "+c.APIKey)
+		return
+	}
+	req.Header.Set("x-api-key", c.APIKey)
+	req.Header.Set("anthropic-version", "2023-06-01")
+}
+
+func (c *Client) parseResponse(body []byte) (string, error) {
+	if c.Provider == ProviderOpenAI {
+		var out openAIResponse
+		if err := json.Unmarshal(body, &out); err != nil {
+			return "", fmt.Errorf("parse AI response: %w", err)
+		}
+		var text strings.Builder
+		for _, item := range out.Output {
+			if item.Type != "message" {
+				continue
+			}
+			for _, part := range item.Content {
+				if part.Type == "output_text" {
+					text.WriteString(part.Text)
+				}
+			}
+		}
+		if text.Len() == 0 {
+			if out.IncompleteDetails != nil && out.IncompleteDetails.Reason != "" {
+				return "", fmt.Errorf("AI response was incomplete: %s", out.IncompleteDetails.Reason)
+			}
+			return "", fmt.Errorf("AI response did not contain any text (status %q)", out.Status)
+		}
+		return text.String(), nil
+	}
+
+	var out Response
+	if err := json.Unmarshal(body, &out); err != nil {
+		return "", fmt.Errorf("parse AI response: %w", err)
+	}
+	if len(out.Content) == 0 {
+		return "", fmt.Errorf("AI response did not contain content blocks")
+	}
+	return out.Content[0].Text, nil
+}
+
+// apiErrorMessage pulls error.message out of an API error body. Both
+// providers use that shape; anything else is returned as-is.
+func apiErrorMessage(body []byte) string {
+	var e struct {
+		Error struct {
+			Message string `json:"message"`
+		} `json:"error"`
+	}
+	if json.Unmarshal(body, &e) == nil && e.Error.Message != "" {
+		return e.Error.Message
+	}
+	return strings.TrimSpace(string(body))
+}
+
+func sleep(ctx context.Context, d time.Duration) error {
+	t := time.NewTimer(d)
+	defer t.Stop()
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-t.C:
+		return nil
+	}
 }
 
 // AnalyseModule calls AI to produce one module analysis.

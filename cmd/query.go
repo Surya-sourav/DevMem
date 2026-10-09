@@ -9,8 +9,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/Surya-sourav/devmem/internal/ai"
+	"github.com/Surya-sourav/devmem/internal/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -34,14 +36,23 @@ var queryCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		client := ai.NewClient(apiKey, model)
+		client := ai.NewClient(provider, apiKey, model)
 		system := "Answer the user's question using only the provided DevMem documentation context. If unsupported by context, say so clearly."
 		user := "Documentation context:\n" + contextDocs + "\n\nQuestion:\n" + question
-		answer, err := client.Call(ctx, system, user, 1400)
+		var answer string
+		err = ui.Step("Asking "+model, func() (string, error) {
+			start := time.Now()
+			answer, err = client.Call(ctx, system, user, 1400)
+			if err != nil {
+				return "", fmt.Errorf("query AI: %w", err)
+			}
+			return elapsed(start), nil
+		})
 		if err != nil {
-			return fmt.Errorf("query AI: %w", err)
+			return err
 		}
-		fmt.Fprintln(os.Stdout, answer)
+		ui.Blank()
+		fmt.Fprintln(os.Stdout, strings.TrimSpace(answer))
 		return nil
 	},
 }

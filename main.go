@@ -22,15 +22,18 @@ THE SOFTWARE.
 package main
 
 import (
-	"fmt"
+	"errors"
 	"os"
 
 	"github.com/Surya-sourav/devmem/cmd"
+	"github.com/Surya-sourav/devmem/internal/ui"
 )
 
 func main() {
 	if err := cmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		if !errors.Is(err, cmd.ErrPendingDocs) {
+			ui.Error(err)
+		}
 		os.Exit(1)
 	}
 }

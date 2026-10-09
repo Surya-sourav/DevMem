@@ -841,7 +841,7 @@
             <td>Required for capture and status commands</td>
           </tr>
           <tr>
-            <td>Anthropic API key</td>
+            <td>Anthropic or OpenAI API key</td>
             <td>-</td>
             <td>Required for all AI operations</td>
           </tr>
@@ -863,7 +863,7 @@ devmem init</pre>
 
       <div class="callout">
         <p class="callout-label">Info</p>
-        <p>Your API key is stored in the macOS Keychain (or OS equivalent on Linux/Windows) using the system credential store. It is never written to disk in plain text and never included in any file that could be accidentally committed.</p>
+        <p><code>devmem init</code> asks whether to use Anthropic or OpenAI, then asks for that provider's API key. If you choose to save it, the key is written to <code>.devmem/credentials.json</code> with owner-only permissions (0600). Add <code>.devmem/credentials.json</code> to your <code>.gitignore</code>. You can also skip saving and set <code>ANTHROPIC_API_KEY</code>, <code>OPENAI_API_KEY</code> or <code>DEVMEM_API_KEY</code> instead.</p>
       </div>
 
 
@@ -887,9 +887,14 @@ devmem init</pre>
             <td>Repository root to operate on</td>
           </tr>
           <tr>
+            <td>--provider</td>
+            <td>Asked during init</td>
+            <td>AI provider: <code>anthropic</code> or <code>openai</code>. Also settable with <code>DEVMEM_PROVIDER</code></td>
+          </tr>
+          <tr>
             <td>--model</td>
-            <td>claude-sonnet-4-20250514</td>
-            <td>Anthropic model for all AI calls</td>
+            <td>claude-sonnet-4-20250514 / gpt-5-mini</td>
+            <td>Model for all AI calls; the default depends on the provider</td>
           </tr>
         </tbody>
       </table>
@@ -1461,7 +1466,8 @@ The CLI orchestrates crawl, AI analysis, state persistence, and git-linked docum
         </thead>
         <tbody>
           <tr><td>version</td><td>string</td><td>"1"</td><td>Config schema version</td></tr>
-          <tr><td>ai_model</td><td>string</td><td>claude-sonnet-4-20250514</td><td>Anthropic model for AI calls</td></tr>
+          <tr><td>provider</td><td>string</td><td>"anthropic"</td><td>AI provider chosen during init: anthropic or openai</td></tr>
+          <tr><td>ai_model</td><td>string</td><td>depends on provider</td><td>Model for AI calls (claude-sonnet-4-20250514 or gpt-5-mini by default)</td></tr>
           <tr><td>max_concurrent</td><td>number</td><td>5</td><td>Max simultaneous AI calls during init</td></tr>
           <tr><td>ignore</td><td>array</td><td>defaults + custom</td><td>Extra ignore patterns for crawl</td></tr>
           <tr><td>modules</td><td>object</td><td>auto-detected</td><td>Explicit module definitions overriding heuristics</td></tr>

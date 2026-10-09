@@ -4,14 +4,19 @@ Copyright © 2026 Surya Parida <surya.aimlx@gmail.com>
 package cmd
 
 import (
+	"errors"
 	"fmt"
-	"os"
 	"sort"
 
 	"github.com/Surya-sourav/devmem/internal/git"
 	"github.com/Surya-sourav/devmem/internal/state"
+	"github.com/Surya-sourav/devmem/internal/ui"
 	"github.com/spf13/cobra"
 )
+
+// ErrPendingDocs makes status exit non-zero when docs are behind, so it
+// can gate CI. The pending list has already been printed.
+var ErrPendingDocs = errors.New("undocumented changes detected")
 
 var statusCmd = &cobra.Command{
 	Use:   "status",
@@ -30,7 +35,7 @@ var statusCmd = &cobra.Command{
 			return fmt.Errorf("get current commit: %w", err)
 		}
 		if head == s.LastCommit {
-			fmt.Fprintln(os.Stdout, "All documentation is current.")
+			ui.Stdout("  " + ui.OK() + " All documentation is current " + ui.Muted.Render("("+shortCommit(head)+")"))
 			return nil
 		}
 		files, err := git.GetChangedFiles(repoDir, s.LastCommit, head)
@@ -40,15 +45,20 @@ var statusCmd = &cobra.Command{
 		affected := modulesForFiles(cfg, files)
 		names := keys(affected)
 		sort.Strings(names)
-		fmt.Fprintln(os.Stdout, "Module\tStatus")
-		for _, name := range names {
-			fmt.Fprintf(os.Stdout, "%s\tpending-doc-update\n", name)
-		}
 		if len(names) == 0 {
-			fmt.Fprintln(os.Stdout, "No module-level documentation updates required.")
+			ui.Stdout("  " + ui.OK() + " No module-level documentation updates required " +
+				ui.Muted.Render(fmt.Sprintf("(%s since %s)", plural(len(files), "file"), shortCommit(s.LastCommit))))
 			return nil
 		}
-		return fmt.Errorf("undocumented changes detected")
+		ui.Stdout("  " + ui.Bold.Render("Pending documentation updates") + " " +
+			ui.Muted.Render(fmt.Sprintf("since %s", shortCommit(s.LastCommit))))
+		ui.Stdout("")
+		for _, name := range names {
+			ui.Stdout("  " + ui.Pending() + " " + name)
+		}
+		ui.Stdout("")
+		ui.Stdout("  " + ui.Muted.Render("Run ") + ui.Code.Render("devmem capture") + ui.Muted.Render(" to update them."))
+		return ErrPendingDocs
 	},
 }
 
