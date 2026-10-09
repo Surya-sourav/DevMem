@@ -1,5 +1,5 @@
 /*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
+Copyright © 2026 Surya Parida <surya.aimlx@gmail.com>
 */
 package cmd
 
@@ -13,12 +13,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Surya-sourav/devmem/internal/ai"
+	"github.com/Surya-sourav/devmem/internal/crawler"
+	"github.com/Surya-sourav/devmem/internal/docs"
+	"github.com/Surya-sourav/devmem/internal/git"
+	"github.com/Surya-sourav/devmem/internal/state"
 	"github.com/spf13/cobra"
-	"github.com/yourusername/devmem/internal/ai"
-	"github.com/yourusername/devmem/internal/crawler"
-	"github.com/yourusername/devmem/internal/docs"
-	"github.com/yourusername/devmem/internal/git"
-	"github.com/yourusername/devmem/internal/state"
 )
 
 type Progress struct {

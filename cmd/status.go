@@ -8,9 +8,9 @@ import (
 	"os"
 	"sort"
 
+	"github.com/Surya-sourav/devmem/internal/git"
+	"github.com/Surya-sourav/devmem/internal/state"
 	"github.com/spf13/cobra"
-	"github.com/yourusername/devmem/internal/git"
-	"github.com/yourusername/devmem/internal/state"
 )
 
 var statusCmd = &cobra.Command{
